@@ -12,14 +12,13 @@ namespace Schedule_master_2000.Services
         private static User ToUser(IDataReader reader)
         {
             return new User
-            {
-                ID = (int)reader["userid"],
-                Username = (string)reader["username"],
-                Password = (string)reader["user_password"],
-                Email = (string)reader["email"],
-                Role = (string)reader["user_role"],
-
-            };
+            (
+                (int)reader["userid"],
+                (string)reader["username"],
+                (string)reader["user_password"],
+                (string)reader["email"],
+                (string)reader["user_role"]
+            );
         }
 
         private readonly IDbConnection _connection;
