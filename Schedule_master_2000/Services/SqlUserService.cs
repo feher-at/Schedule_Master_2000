@@ -13,12 +13,12 @@ namespace Schedule_master_2000.Services
         {
             return new User
             {
-                Id = (int)reader["id"],
+                ID = (int)reader["userid"],
                 Username = (string)reader["username"],
-                RegistrationTime = (DateTime)reader["registration_time"],
-                QuestionCount = (long)reader["question_count"],
-                AnswerCount = (long)reader["answer_count"],
-                CommentCount = (long)reader["comment_count"],
+                Password = (string)reader["user_password"],
+                Email = (string)reader["email"],
+                Role = (string)reader["user_role"],
+
             };
         }
 
@@ -32,10 +32,10 @@ namespace Schedule_master_2000.Services
         public User GetOne(int id)
         {
             using var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM v_user WHERE id = @id";
+            command.CommandText = "SELECT * FROM users WHERE userid = @userid";
 
             var param = command.CreateParameter();
-            param.ParameterName = "id";
+            param.ParameterName = "userid";
             param.Value = id;
 
             using var reader = command.ExecuteReader();
@@ -46,7 +46,7 @@ namespace Schedule_master_2000.Services
         public List<User> GetAll()
         {
             using var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM v_user";
+            command.CommandText = "SELECT * FROM users";
 
             using var reader = command.ExecuteReader();
             List<User> users = new List<User>();
