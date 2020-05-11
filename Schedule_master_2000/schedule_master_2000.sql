@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS slots;
-DROP TABLE IF EXISTS columns;
+DROP TABLE IF EXISTS schedule_columns;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS users;
 
@@ -18,15 +18,15 @@ CREATE TABLE schedules(
     title VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE columns(
-    columnid SERIAL PRIMARY KEY,
+CREATE TABLE schedule_columns(
+    schedule_columns SERIAL PRIMARY KEY,
     scheduleid INT REFERENCES schedules(scheduleid) ON DELETE CASCADE,
     title VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE slots(
     slotid SERIAL PRIMARY KEY,
-    columnid INT REFERENCES columns(columnid) ON DELETE CASCADE
+    schedule_columns INT REFERENCES schedule_columns(schedule_columns) ON DELETE CASCADE
 );
 
 CREATE TABLE tasks(
