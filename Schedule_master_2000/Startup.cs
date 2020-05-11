@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Npgsql.Logging;
-
+using Schedule_master_2000.Services;
 
 namespace Schedule_master_2000
 {
@@ -74,6 +74,7 @@ namespace Schedule_master_2000
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => options.EventsType = typeof(CustomCookieAuthenticationEvents));
             services.AddScoped<CustomCookieAuthenticationEvents>();
+            services.AddScoped<IUserService, SqlUserService>();
             services.AddScoped<IDbConnection>(_ =>
             {
                 var connection = new NpgsqlConnection(connectionString);
@@ -102,7 +103,6 @@ namespace Schedule_master_2000
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
