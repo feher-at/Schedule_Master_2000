@@ -102,7 +102,6 @@ namespace Schedule_master_2000
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
