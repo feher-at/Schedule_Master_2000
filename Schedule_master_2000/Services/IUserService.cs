@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Schedule_master_2000.Services
 {
-    interface IUserService
+    public interface IUserService
     {
         User GetOne(int id);
         List<User> GetAll();

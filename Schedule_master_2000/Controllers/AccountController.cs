@@ -8,16 +8,18 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Schedule_master_2000.Domain;
+using Schedule_master_2000.ViewModels;
+using Schedule_master_2000.Services;
 
 namespace Schedule_master_2000.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IDataLoad _loader;
+        private readonly IUserService _userService;
 
-        public AccountController(IDataLoad loader)
+        public AccountController(IUserService userService)
         {
-            _loader = loader;
+            _userService = userService;
         }
 
         public IActionResult Login()
@@ -31,14 +33,24 @@ namespace Schedule_master_2000.Controllers
             return View();
 
         }
-        public IActionResult RegistrationComplete([FromForm]string username, [FromForm]string email, [FromForm] string passwordA)
-        {
-            //if (!Utility.IsValidEmail(email))
-            //{
-            //    return RedirectToAction("Registration", "Account");
 
-            //}
-            //_loader.InsertUser(username, email, Utility.Hash(passwordA));
+        public IActionResult CreateUser()
+        {
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+
+        public IActionResult RegistrationComplete(UserViewModel model)
+        {
+            if (!Utility.IsValidEmail(model.Email))
+            {
+                return RedirectToAction("Registration", "Account");
+            }
+
+            //_loader.InsertUser(model.Username, model.Email, Utility.Hash(model.Password));
+
             return View();
         }
 
