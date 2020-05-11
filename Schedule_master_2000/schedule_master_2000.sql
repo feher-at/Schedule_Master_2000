@@ -19,14 +19,14 @@ CREATE TABLE schedules(
 );
 
 CREATE TABLE schedule_columns(
-    schedule_columns SERIAL PRIMARY KEY,
+    schedule_columnsID SERIAL PRIMARY KEY,
     scheduleid INT REFERENCES schedules(scheduleid) ON DELETE CASCADE,
     title VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE slots(
     slotid SERIAL PRIMARY KEY,
-    schedule_columns INT REFERENCES schedule_columns(schedule_columns) ON DELETE CASCADE
+    schedule_columnsID INT REFERENCES schedule_columns(schedule_columnsID) ON DELETE CASCADE
 );
 
 CREATE TABLE tasks(

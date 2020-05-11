@@ -14,8 +14,8 @@ namespace Schedule_master_2000.Models
         public string Email { get; set; }
 
         public string Role { get; set; }
-        
 
+       
         public User(int id, string username, string password, string email, string role)
         {
             ID = id;
