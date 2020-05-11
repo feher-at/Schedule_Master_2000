@@ -9,9 +9,10 @@ namespace Schedule_master_2000.Services
 {
     interface IScheduleService
     {
-        Schedule GetOne(int id);
+        List<Schedule> GetOneUserAllSchedule(int userID);
+        Schedule GetOne(int scheduleID);
 
         List<Schedule> GetAll();
-        void DeleteSchedule(int id);
+        void DeleteSchedule(int scheduleID);
     }
 }
