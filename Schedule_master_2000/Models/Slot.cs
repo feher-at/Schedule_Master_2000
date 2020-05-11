@@ -7,5 +7,9 @@ namespace Schedule_master_2000.Models
 {
     public class Slot
     {
+        public int SlotId { get; set; }
+        public List<Column> Columns { get; set; }
+
+
     }
 }

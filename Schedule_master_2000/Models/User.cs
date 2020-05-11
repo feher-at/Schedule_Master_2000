@@ -7,6 +7,7 @@ namespace Schedule_master_2000.Models
 {
     public class User
     {
+        public int UserID { get; private set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
@@ -18,8 +19,9 @@ namespace Schedule_master_2000.Models
         public List<Schedule> Schedule { get; set; }
 
 
-        public User(string username, string password, string email, DateTime registrationTime, string roll, List<Schedule> schedule)
+        public User(int userID, string username, string password, string email, DateTime registrationTime, string roll, List<Schedule> schedule)
         {
+            UserID = userID;
             Username = username;
             Password = password;
             Email = email;

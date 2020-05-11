@@ -7,5 +7,6 @@ namespace Schedule_master_2000.Services
 {
     interface IUserService
     {
+       
     }
 }
