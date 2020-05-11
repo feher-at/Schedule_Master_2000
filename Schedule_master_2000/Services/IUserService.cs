@@ -8,7 +8,7 @@ namespace Schedule_master_2000.Services
 {
     public interface IUserService
     {
-        User GetOne(int id);
+        User GetOne(int userid);
         List<User> GetAll();
 
     }
