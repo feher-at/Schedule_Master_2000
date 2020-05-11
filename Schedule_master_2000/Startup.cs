@@ -1,29 +1,85 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
+using Npgsql.Logging;
+
 
 namespace Schedule_master_2000
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public sealed class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
         {
-            Configuration = configuration;
+            private static void RemoveReturnUrlFromRedirectUri(RedirectContext<CookieAuthenticationOptions> context)
+            {
+                var ub = new UriBuilder(context.RedirectUri);
+                var query = QueryHelpers.ParseQuery(ub.Query);
+                ub.Query = null;
+                query.Remove("ReturnUrl");
+                context.RedirectUri = ub.Uri.ToString();
+                foreach (var key in query.Keys)
+                {
+                    context.RedirectUri = QueryHelpers.AddQueryString(context.RedirectUri, key, query[key]);
+                }
+            }
+
+            public override Task RedirectToAccessDenied(RedirectContext<CookieAuthenticationOptions> context)
+            {
+                RemoveReturnUrlFromRedirectUri(context);
+                return base.RedirectToAccessDenied(context);
+            }
+
+            public override Task RedirectToLogin(RedirectContext<CookieAuthenticationOptions> context)
+            {
+                RemoveReturnUrlFromRedirectUri(context);
+                return base.RedirectToLogin(context);
+            }
         }
 
+        private readonly string connectionString;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        {
+            if (webHostEnvironment.IsDevelopment())
+            {
+                NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug, true, true);
+                NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            }
+            Configuration = configuration;
+            connectionString = InitConnectionString();
+        }
+        private string InitConnectionString()
+        {
+            string connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "Host=localhost;Username=postgres;Password=admin;Database=schedulemaster";
+            return connectionString;
+        }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => options.EventsType = typeof(CustomCookieAuthenticationEvents));
+            services.AddScoped<CustomCookieAuthenticationEvents>();
+            services.AddScoped<IDbConnection>(_ =>
+            {
+                var connection = new NpgsqlConnection(connectionString);
+                connection.Open();
+                return connection;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +100,7 @@ namespace Schedule_master_2000
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
