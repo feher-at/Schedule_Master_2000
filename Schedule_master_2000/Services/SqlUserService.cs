@@ -29,14 +29,14 @@ namespace Schedule_master_2000.Services
             _connection = connection;
         }
 
-        public User GetOne(int id)
+        public User GetOne(int userid)
         {
             using var command = _connection.CreateCommand();
             command.CommandText = "SELECT * FROM users WHERE userid = @userid";
 
             var param = command.CreateParameter();
             param.ParameterName = "userid";
-            param.Value = id;
+            param.Value = userid;
 
             using var reader = command.ExecuteReader();
             reader.Read();

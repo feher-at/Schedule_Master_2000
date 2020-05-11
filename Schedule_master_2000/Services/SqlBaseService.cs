@@ -22,15 +22,15 @@ namespace Schedule_master_2000.Services
                 {
                     if (sqlState >= 23505)
                     {
-                        throw new AskMateException();
+                        //throw new AskMateException();
                     }
                     else if (sqlState == 45000)
                     {
-                        throw new AskMateNotAuthorizedException(ex);
+                        //throw new AskMateNotAuthorizedException(ex);
                     }
                     else if (sqlState == 45001)
                     {
-                        throw new AskMateCannotVoteException(ex);
+                        //throw new AskMateCannotVoteException(ex);
                     }
                 }
                 throw;

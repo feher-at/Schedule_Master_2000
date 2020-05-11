@@ -7,27 +7,41 @@
       "sslPort": 44336
     }
   },
-  "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "commandLineArgs": "watch run",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "DB_USER": "postgres",
-        "DB_NAME": "schedulemaster",
-        "DB_PASS": "admin",
-        "DB_HOST": "localhost",
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Schedule_master_2000": {
-      "commandName": "Project",
-      "commandLineArgs": "watch run",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    "profiles": {
+        "IIS Express": {
+            "commandName": "IISExpress",
+            "commandLineArgs": "watch run",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "DB_USER": "postgres",
+                "DB_NAME": "schedulemaster",
+                "DB_PASS": "admin",
+                "DB_HOST": "localhost",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Schedule_master_2000": {
+            "commandName": "Project",
+            "commandLineArgs": "watch run",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "applicationUrl": "https://localhost:5001;http://localhost:5000"
+        },
+        "WatchRun": {
+            "executablePath": "dotnet.exe",
+            "commandLineArgs": "watch run",
+            "workingDirectory": "$(ProjectDir)",
+            "launchBrowser": true,
+            "launchUrl": "http://localhost:5000/",
+            "environmentVariables": {
+                "DB_USER": "postgres",
+                "DB_NAME": "schedulemaster",
+                "DB_PASS": "admin",
+                "DB_HOST": "localhost",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
     }
-  }
 }

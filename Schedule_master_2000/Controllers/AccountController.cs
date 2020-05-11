@@ -25,22 +25,24 @@ namespace Schedule_master_2000.Controllers
         public IActionResult Login()
         {
             return View();
-
         }
 
         public IActionResult Registration()
         {
             return View();
-
         }
 
-        public IActionResult CreateUser()
+        [HttpPost]
+        public IActionResult CreateUser(UserViewModel model)
         {
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                // create and add user
+                // then redirect to somewhere
+            }
 
+            return View("Registration");
         }
-
-
 
         public IActionResult RegistrationComplete(UserViewModel model)
         {

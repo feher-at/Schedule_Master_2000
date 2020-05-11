@@ -28,9 +28,14 @@
                 </div>
             </div>
         </nav>
+        <div class="container">
+            <a class="btn btn-success text-light float-right m-2">Login</a>
+            <a asp-controller="Account" asp-action="Registration" class="btn btn-dark text-light float-right m-2">Registrate</a>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            
             @RenderBody()
         </main>
     </div>
