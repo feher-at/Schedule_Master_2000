@@ -27,13 +27,14 @@ namespace Schedule_master_2000.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Registration()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateUser(UserViewModel model)
+        public IActionResult Registration(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -41,7 +42,7 @@ namespace Schedule_master_2000.Controllers
                 // then redirect to somewhere
             }
 
-            return View("Registration");
+            return View();
         }
 
         public IActionResult RegistrationComplete(UserViewModel model)

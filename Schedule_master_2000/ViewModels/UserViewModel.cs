@@ -11,6 +11,7 @@ namespace Schedule_master_2000.ViewModels
         [Required]
         public string Username { get; set; }
         [Required]
+        [EmailAddress(ErrorMessage = "Wrong e-mail format.")]
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
