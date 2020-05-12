@@ -13,6 +13,6 @@ namespace Schedule_master_2000.Services
         Schedule GetOne(int scheduleID);
 
         List<Schedule> GetAll();
-        void DeleteSchedule(int scheduleID);
+        void DeleteSchedule(int userID, int scheduleID);
     }
 }

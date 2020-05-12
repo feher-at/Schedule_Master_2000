@@ -70,15 +70,22 @@ namespace Schedule_master_2000.Services
             return ToSchedule(reader);
         }
 
-        public void DeleteSchedule(int scheduleID)
+        public void DeleteSchedule(int userID, int scheduleID)
         {
             using var command = _connection.CreateCommand();
-            command.CommandText = "Delete * From schedules Where scheduleid = @scheduleid";
 
-            var param = command.CreateParameter();
-            param.ParameterName = "scheduleid";
-            param.Value = scheduleID;
-            using var reader = command.ExecuteReader();
+            command.CommandText = "Select delete_schedule(@userid, @scheduleid)";
+
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "userid";
+            userIdParam.Value = userID;
+            var scheduleIdParam = command.CreateParameter();
+            scheduleIdParam.ParameterName = "scheduleid";
+            scheduleIdParam.Value = scheduleID;
+            command.Parameters.Add(userIdParam);
+            command.Parameters.Add(scheduleIdParam);
+            HandleExecuteNonQuery(command);
+
         }
     }
 }
