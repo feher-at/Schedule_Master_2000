@@ -87,5 +87,48 @@ namespace Schedule_master_2000.Services
             param.Value = columnID;
             using var reader = command.ExecuteReader();
         }
+
+        public void InsertColumn(int scheduleID, int userID,string title)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userIDParam = command.CreateParameter();
+            userIDParam.ParameterName = "userid";
+            userIDParam.Value = userID;
+            var scheduleIDParam = command.CreateParameter();
+            scheduleIDParam.ParameterName = "scheduleid";
+            scheduleIDParam.Value = scheduleID;
+            var TitleParam = command.CreateParameter();
+            TitleParam.ParameterName = "title";
+            TitleParam.Value = title;
+            command.CommandText = $"INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (@scheduleid ,@userid, @title)";
+            command.Parameters.Add(userIDParam);
+            command.Parameters.Add(scheduleIDParam);
+            command.Parameters.Add(TitleParam);
+            HandleExecuteNonQuery(command);
+        }
+
+        public void UpdateColumn(int userID,int columnID,string title)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userIDParam = command.CreateParameter();
+            userIDParam.ParameterName = "userId";
+            userIDParam.Value = userID;
+
+            var columnIDParam = command.CreateParameter();
+            columnIDParam.ParameterName = "columnid";
+            columnIDParam.Value = columnID;
+
+            var titleParam = command.CreateParameter();
+            titleParam.ParameterName = "title";
+            titleParam.Value = (object)title ?? DBNull.Value;
+
+            command.CommandText = "SELECT update_column(@userId, @columnid, @title)";
+            command.Parameters.Add(userIDParam);
+            command.Parameters.Add(columnIDParam);
+            command.Parameters.Add(titleParam);
+            HandleExecuteNonQuery(command);
+        }
     }
 }

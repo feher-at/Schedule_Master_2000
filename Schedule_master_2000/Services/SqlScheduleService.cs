@@ -104,7 +104,7 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
         }
 
-        public void UpdateSchedule(int userID, int ScheduleID,string title)
+        public void UpdateSchedule(int userID, int scheduleID,string title)
         {
             using var command = _connection.CreateCommand();
 
@@ -112,9 +112,9 @@ namespace Schedule_master_2000.Services
             userIDParam.ParameterName = "userId";
             userIDParam.Value = userID;
 
-            var scheduleID = command.CreateParameter();
-            scheduleID.ParameterName = "scheduleid";
-            scheduleID.Value = ScheduleID;
+            var scheduleIDParam = command.CreateParameter();
+            scheduleIDParam.ParameterName = "scheduleid";
+            scheduleIDParam.Value = scheduleID;
 
             var titleParam = command.CreateParameter();
             titleParam.ParameterName = "title";

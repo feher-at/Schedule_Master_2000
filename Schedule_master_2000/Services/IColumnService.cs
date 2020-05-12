@@ -13,5 +13,7 @@ namespace Schedule_master_2000.Services
         List<Column> GetOneScheduleAllColumn(int scheduleID);
         Column GetOne(int columnID);
         void DeleteColumn(int columnID);
+        void UpdateColumn(int userID, int columnID, string title);
+        void InsertColumn(int scheduleID, int userID, string title);
     }
 }

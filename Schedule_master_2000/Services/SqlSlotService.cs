@@ -77,5 +77,22 @@ namespace Schedule_master_2000.Services
             reader.Read();
             return ToSlot(reader);
         }
+
+        public void InsertSlot(int columnID, int userID)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userIDParam = command.CreateParameter();
+            userIDParam.ParameterName = "userid";
+            userIDParam.Value = userID;
+            var columnIDParam = command.CreateParameter();
+            columnIDParam.ParameterName = "columnid";
+            columnIDParam.Value = columnID;
+            command.CommandText = $"INSERT INTO slots(schedule_columnsid, userid) VALUES (@columnid, @userid)";
+            command.Parameters.Add(userIDParam);
+            command.Parameters.Add(columnIDParam);
+            HandleExecuteNonQuery(command);
+        }
+
     }
 }

@@ -81,11 +81,27 @@ BEGIN
     UPDATE
         schedules
     SET
-        title = p_title,
-        message = p_message,
-        image = p_image
+        title = p_title
     WHERE
         scheduleid = p_scheduleid AND
+        userid = p_userid;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_column(p_userid INTEGER, p_columnid INTEGER, p_title TEXT) RETURNS VOID AS $$
+DECLARE
+    v_userid INTEGER;
+BEGIN
+    SELECT q.userid FROM schedule_columns AS q WHERE q.schedule_columnsid = p_columnid INTO v_userid;
+    IF v_userid <> p_userid THEN
+        RAISE EXCEPTION 'Not authorized' USING ERRCODE = 45000;
+    END IF;
+    UPDATE
+        schedule_columns
+    SET
+        title = p_title,
+    WHERE
+        schedule_columnsid = p_columnid AND
         userid = p_userid;
 END;
 $$ LANGUAGE plpgsql;
