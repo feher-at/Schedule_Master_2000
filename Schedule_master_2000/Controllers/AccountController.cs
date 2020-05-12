@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Schedule_master_2000.Domain;
 using Schedule_master_2000.ViewModels;
 using Schedule_master_2000.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Schedule_master_2000.Controllers
 {
@@ -22,8 +23,14 @@ namespace Schedule_master_2000.Controllers
             _userService = userService;
         }
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string returnUrl)
         {
+            //LoginViewModel model = new LoginViewModel
+            //{
+            //    ReturnURL = returnUrl,
+
+
+            //}
             return View();
         }
 
@@ -34,7 +41,7 @@ namespace Schedule_master_2000.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registration(UserViewModel model)
+        public IActionResult Registration(RegistrationViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -45,7 +52,7 @@ namespace Schedule_master_2000.Controllers
             return View();
         }
 
-        public IActionResult RegistrationComplete(UserViewModel model)
+        public IActionResult RegistrationComplete(RegistrationViewModel model)
         {
             if (!Utility.IsValidEmail(model.Email))
             {

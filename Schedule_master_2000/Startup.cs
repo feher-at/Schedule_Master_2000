@@ -73,6 +73,12 @@ namespace Schedule_master_2000
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => options.EventsType = typeof(CustomCookieAuthenticationEvents));
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "670423635675-t3i8gg6jdp8hnoaisqcadbt84aau40gi.apps.googleusercontent.com";
+                    options.ClientSecret = "O0WEALU0XEmo1ZHqZHTTLSW3";
+                });
             services.AddScoped<CustomCookieAuthenticationEvents>();
             services.AddScoped<IUserService, SqlUserService>();
             services.AddScoped<IDbConnection>(_ =>
@@ -101,7 +107,7 @@ namespace Schedule_master_2000
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication();          
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
