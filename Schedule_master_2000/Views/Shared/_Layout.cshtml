@@ -37,6 +37,10 @@
         </nav>
     </header>
     <main role="main" class="pb-3">
+        <div class="container overflow-auto">
+            <a asp-controller="Account" asp-action="LoginRegister" class="btn btn-success text-light float-right m-2">Login</a>
+            <a asp-controller="Account" asp-action="Registration" class="btn btn-dark text-light float-right m-2">Sign Up</a>
+        </div>
         @RenderBody()
     </main>
 
