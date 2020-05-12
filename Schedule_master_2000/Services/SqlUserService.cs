@@ -69,6 +69,33 @@ namespace Schedule_master_2000.Services
             using var reader = command.ExecuteReader();
         }
 
+        public void Register(string userName, string password, string email, string role)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userNameParam = command.CreateParameter();
+            userNameParam.ParameterName = "username";
+            userNameParam.Value = userName;
+            var passwordParam = command.CreateParameter();
+            passwordParam.ParameterName = "password";
+            passwordParam.Value = password;
+            var emailParam = command.CreateParameter();
+            emailParam.ParameterName = "email";
+            emailParam.Value = email;
+            var roleParam = command.CreateParameter();
+            roleParam.ParameterName = "role";
+            roleParam.Value = role;
+
+            command.CommandText = $"INSERT INTO users(username,user_password,email,user_role) VALUES (@username, @password, @email, @role)";
+            command.Parameters.Add(userNameParam);
+            command.Parameters.Add(passwordParam);
+            command.Parameters.Add(emailParam);
+            command.Parameters.Add(roleParam);
+
+            HandleExecuteNonQuery(command);
+
+        }
+
         public bool CheckIfUserExists(string email)
         {
             using var command = _connection.CreateCommand();
