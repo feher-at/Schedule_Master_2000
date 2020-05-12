@@ -61,7 +61,7 @@ namespace Schedule_master_2000.Controllers
         public async Task<ActionResult> LogOutAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -109,7 +109,7 @@ namespace Schedule_master_2000.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Schedule", "Home");
             }
             else
             {
