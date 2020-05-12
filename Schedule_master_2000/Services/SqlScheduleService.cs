@@ -87,5 +87,46 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
 
         }
+
+        public void InsertSchedule(int userID, string title)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "userid";
+            userIdParam.Value = userID;
+            var titleParam = command.CreateParameter();
+            titleParam.ParameterName = "title";
+            titleParam.Value = title;
+            command.CommandText = $"INSERT INTO schedules(userid,title) VALUES (@userid, @title)";
+            command.Parameters.Add(userIdParam);
+            command.Parameters.Add(titleParam);
+            HandleExecuteNonQuery(command);
+        }
+
+        public void UpdateSchedule(int userID, int ScheduleID,string title)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userIDParam = command.CreateParameter();
+            userIDParam.ParameterName = "userId";
+            userIDParam.Value = userID;
+
+            var scheduleID = command.CreateParameter();
+            scheduleID.ParameterName = "scheduleid";
+            scheduleID.Value = ScheduleID;
+
+            var titleParam = command.CreateParameter();
+            titleParam.ParameterName = "title";
+            titleParam.Value = (object)title ?? DBNull.Value;
+
+            command.CommandText = "SELECT update_schedule(@userId, @scheduleid, @title)";
+            command.Parameters.Add(userIDParam);
+            command.Parameters.Add(scheduleID);
+            command.Parameters.Add(titleParam);
+            HandleExecuteNonQuery(command);
+        }
+
+            
     }
 }

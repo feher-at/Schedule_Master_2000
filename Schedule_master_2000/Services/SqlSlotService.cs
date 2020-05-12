@@ -13,7 +13,9 @@ namespace Schedule_master_2000.Services
         {
             return new Slot(
                (int)reader["slotid"],
-               (int)reader["schedule_columnsid"]);
+               (int)reader["schedule_columnsid"],
+               (int)reader["userid"]);
+                
                
 
         }
@@ -23,6 +25,25 @@ namespace Schedule_master_2000.Services
         public SqlSlotService(IDbConnection connection)
         {
             _connection = connection;
+        }
+
+        public List<Slot> GetOneUsersAllSlots(int userID)
+        {
+            List<Slot> slot = new List<Slot>();
+            using var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM slots WHERE userid = @userid";
+
+            var param = command.CreateParameter();
+            param.ParameterName = "userid";
+            param.Value = userID;
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                slot.Add(ToSlot(reader));
+            }
+
+            return slot;
         }
 
         public List<Slot> GetOneColumnAllSlots(int columnID)

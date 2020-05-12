@@ -9,6 +9,7 @@ namespace Schedule_master_2000.Services
 {
     interface IColumnService
     {
+        List<Column> GetAllCollumnToOneUser(int userID);
         List<Column> GetOneScheduleAllColumn(int scheduleID);
         Column GetOne(int columnID);
         void DeleteColumn(int columnID);
