@@ -34,7 +34,7 @@ namespace Schedule_master_2000.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registration(UserViewModel model)
+        public IActionResult Registration(RegistrationViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace Schedule_master_2000.Controllers
             return View();
         }
 
-        public IActionResult RegistrationComplete(UserViewModel model)
+        public IActionResult RegistrationComplete(RegistrationViewModel model)
         {
             if (!Utility.IsValidEmail(model.Email))
             {

@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Schedule_master_2000.ViewModels
 {
-    public class UserViewModel
+    public class LoginViewModel
     {
         [Required]
         public string Username { get; set; }
         [Required]
-        [EmailAddress(ErrorMessage = "Wrong e-mail format.")]
-        public string Email { get; set; }
-        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }
