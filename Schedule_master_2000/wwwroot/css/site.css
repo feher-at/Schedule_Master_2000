@@ -1,12 +1,24 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.jumbotron {
+    color: white;
+    background-image: url("https://4kwallpaper.wiki/wp-content/uploads/2019/09/63340.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
 }
-
+.vertical-center {
+    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+    display: flex;
+    align-items: center;
+}
+#home {
+    text-align: center;
+    color: black;
+}
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
