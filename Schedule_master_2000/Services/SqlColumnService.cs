@@ -13,6 +13,7 @@ namespace Schedule_master_2000.Services
         {
             return new Column(
                (int)reader["schedule_columnsid"],
+               (int)reader["userid"],
                (int)reader["scheduleid"],
                (string)reader["title"] );
            
@@ -23,6 +24,25 @@ namespace Schedule_master_2000.Services
         public SqlColumnService(IDbConnection connection)
         {
             _connection = connection;
+        }
+
+        public List<Column> GetAllCollumnToOneUser(int userID)
+        {
+            List<Column> column = new List<Column>();
+            using var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM schedule_columns WHERE userid = @userid";
+
+            var param = command.CreateParameter();
+            param.ParameterName = "userid";
+            param.Value = userID;
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                column.Add(ToColumn(reader));
+            }
+
+            return column;
         }
 
         public List<Column> GetOneScheduleAllColumn(int scheduleID)

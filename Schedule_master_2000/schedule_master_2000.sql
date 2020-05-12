@@ -21,16 +21,23 @@ CREATE TABLE schedules(
 CREATE TABLE schedule_columns(
     schedule_columnsID SERIAL PRIMARY KEY,
     scheduleid INT REFERENCES schedules(scheduleid) ON DELETE CASCADE,
+    userid INT REFERENCES users(userid) ON DELETE CASCADE,
     title VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE slots(
     slotid SERIAL PRIMARY KEY,
-    schedule_columnsID INT REFERENCES schedule_columns(schedule_columnsID) ON DELETE CASCADE
+    schedule_columnsID INT REFERENCES schedule_columns(schedule_columnsID) ON DELETE CASCADE,
+    userid INT REFERENCES users(userid) ON DELETE CASCADE
+
 );
 
 CREATE TABLE tasks(
+
     taskid SERIAL PRIMARY KEY,
+    userid INT REFERENCES users(userid) ON DELETE CASCADE,
+    scheduleid INT REFERENCES schedules(scheduleid) ON DELETE CASCADE,
+    schedule_columnsID INT REFERENCES schedule_columns(schedule_columnsID) ON DELETE CASCADE,
     slotid INT REFERENCES slots(slotid) ON DELETE CASCADE,
     taskDate TIMESTAMP,
     taskHour int,
@@ -39,17 +46,50 @@ CREATE TABLE tasks(
     img VARCHAR(50) NOT NULL
 );
 
-CREATE OR REPLACE FUNCTION delete_schedule(p_user_id INTEGER, p_schedule_id INTEGER) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION delete_schedule(p_userid INTEGER, p_scheduleid INTEGER) RETURNS VOID AS $$
 DECLARE
     v_user_id INTEGER;
 BEGIN
-    SELECT q.user_id FROM schedules AS q WHERE q.scheduleid = p_schedule_id INTO v_user_id;
-    IF v_user_id <> p_user_id THEN
+    SELECT q.userid FROM schedules AS q WHERE q.scheduleid = p_scheduleid INTO v_userid;
+    IF v_userid <> p_userid THEN
         RAISE EXCEPTION 'Not authorized' USING ERRCODE = 45000;
     END IF;
-    DELETE FROM schedule WHERE scheduleid = p_schedule_id;
+    DELETE FROM schedule WHERE scheduleid = p_scheduleid;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION delete_task(p_userid INTEGER, p_taskid INTEGER) RETURNS VOID AS $$
+DECLARE
+    v_userid INTEGER;
+BEGIN
+    SELECT c.userid FROM tasks AS c WHERE c.taskid = p_taskid INTO v_userid;
+    IF v_userid <> p_userid THEN
+        RAISE EXCEPTION 'Not authorized' USING ERRCODE = 45000;
+    END IF;
+    DELETE FROM task WHERE taskid = p_taskid;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_schedule(p_userid INTEGER, p_scheduleid INTEGER, p_title TEXT) RETURNS VOID AS $$
+DECLARE
+    v_userid INTEGER;
+BEGIN
+    SELECT q.userid FROM schedules AS q WHERE q.scheduleid = p_scheduleid INTO v_userid;
+    IF v_userid <> p_userid THEN
+        RAISE EXCEPTION 'Not authorized' USING ERRCODE = 45000;
+    END IF;
+    UPDATE
+        schedules
+    SET
+        title = p_title,
+        message = p_message,
+        image = p_image
+    WHERE
+        scheduleid = p_scheduleid AND
+        userid = p_userid;
+END;
+$$ LANGUAGE plpgsql;
+
 
 INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', 'admin', 'admin@master.com', 'admin');
 INSERT INTO users(username, user_password, email, user_role) VALUES ('test', 'test', 'test@testmail.com', 'user');
