@@ -9,29 +9,29 @@
     <div class="form-group row">
         <label asp-for="Username" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <input asp-for="Username" class="form-control" placeholder="username" />
+            <input asp-for="Username" class="form-control" placeholder="Username" />
             <span asp-validation-for="Username" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <label asp-for="Email" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <input asp-for="Email" class="form-control" placeholder="example@egmail.com" />
+            <input asp-for="Email" class="form-control" placeholder="Example@egmail.com" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <label asp-for="Password" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <input asp-for="Password" class="form-control" placeholder="secret password" />
+            <input asp-for="Password" class="form-control" placeholder="Password" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Repeat Password</label>
+        <label asp-for="PasswordAgain" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <input class="form-control" placeholder="secret password again" />
-            <span class="text-danger"></span>
+            <input asp-for="PasswordAgain" class="form-control" placeholder="Password Again" />
+            <span asp-validation-for="PasswordAgain" class="text-danger"></span>
         </div>
     </div>
 
