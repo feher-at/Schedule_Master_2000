@@ -12,9 +12,9 @@ namespace Schedule_master_2000.Models
         public List<Schedule> Schedules { get; set; }
 
         public List<Slot> Slots { get; set; }
-        public List<Task> Tasks { get; set; }
+        public List<Tasks> Tasks { get; set; }
 
-        public OneUserSchedules(User user, List<Schedule> schedules, List<Slot> slots, List<Task> tasks)
+        public OneUserSchedules(User user, List<Schedule> schedules, List<Slot> slots, List<Tasks> tasks)
         {
             User = user;
             Schedules = schedules;

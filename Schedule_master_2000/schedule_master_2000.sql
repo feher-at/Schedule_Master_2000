@@ -32,6 +32,8 @@ CREATE TABLE slots(
 CREATE TABLE tasks(
     taskid SERIAL PRIMARY KEY,
     slotid INT REFERENCES slots(slotid) ON DELETE CASCADE,
+    taskDate TIMESTAMP,
+    taskHour int,
     title VARCHAR(50) NOT NULL,
     content VARCHAR(255) NOT NULL,
     img VARCHAR(50) NOT NULL
