@@ -10,7 +10,15 @@
         <p class="lead">Schedule your life with ease!</p>
         <hr class="my-4">
         <form class="form-inline justify-content-center">
-            <button type="button" class="btn btn-success my-2 my-sm-0">Get Started!</button>
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Home" asp-action="Schedule" class="btn btn-dark my-2 my-sm-0 m-2">Go to My Schedule</a>
+                <a asp-controller="Account" asp-action="LogOut" class="btn btn-danger my-2 my-sm-0 m-2">Log Out</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-success my-2 my-sm-0">Get Started</a>
+            }
         </form>
     </div>
 </div>

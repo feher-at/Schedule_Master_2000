@@ -28,6 +28,10 @@ namespace Schedule_master_2000.Controllers
         {
             return View();
         }
+        public IActionResult LoginRegister(RegistrationViewModel model)
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Registration(RegistrationViewModel model)

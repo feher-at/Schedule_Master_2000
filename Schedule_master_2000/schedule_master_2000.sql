@@ -50,3 +50,7 @@ BEGIN
     DELETE FROM schedule WHERE scheduleid = p_schedule_id;
 END;
 $$ LANGUAGE plpgsql;
+
+INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', 'admin', 'admin@master.com', 'admin');
+INSERT INTO users(username, user_password, email, user_role) VALUES ('test', 'test', 'test@testmail.com', 'user');
+INSERT INTO users(username, user_password, email, user_role) VALUES ('adamsilent', 'asdasd', 'adam.csondes@gmail.com', 'user');
