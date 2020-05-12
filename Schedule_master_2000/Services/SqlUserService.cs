@@ -69,6 +69,29 @@ namespace Schedule_master_2000.Services
             using var reader = command.ExecuteReader();
         }
 
+        public User Login(string username, string password)
+        {
+            using var command = _connection.CreateCommand();
+
+            var usernameParam = command.CreateParameter();
+            usernameParam.ParameterName = "username";
+            usernameParam.Value = username;
+
+            var passwordParam = command.CreateParameter();
+            passwordParam.ParameterName = "password";
+            passwordParam.Value = password;
+            command.CommandText = $"SELECT * FROM users WHERE username = @username AND user_password = @password";
+            command.Parameters.Add(usernameParam);
+            command.Parameters.Add(passwordParam);
+
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                return ToUser(reader);
+            }
+            return null;
+        }
+
         public void Register(string userName, string password, string email, string role)
         {
             using var command = _connection.CreateCommand();
