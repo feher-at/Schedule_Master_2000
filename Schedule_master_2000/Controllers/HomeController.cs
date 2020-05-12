@@ -33,5 +33,10 @@ namespace Schedule_master_2000.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Schedule()
+        {
+            return View();
+        }
     }
 }

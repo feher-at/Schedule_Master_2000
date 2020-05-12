@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ScheduleMaster2000</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -37,15 +37,11 @@
         </nav>
     </header>
     <main role="main" class="pb-3">
-        <div class="container overflow-auto">
-            <a asp-controller="Account" asp-action="Login" class="btn btn-success text-light float-right m-2">Login</a>
-            <a asp-controller="Account" asp-action="Registration" class="btn btn-dark text-light float-right m-2">Sign Up</a>
-        </div>
         @RenderBody()
     </main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer text-muted bg-dark">
+        <div class="container text-light">
             &copy; 2020 - ScheduleMaster2000 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
