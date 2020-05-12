@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Schedule_master_2000.Domain;
 using Schedule_master_2000.ViewModels;
 using Schedule_master_2000.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Schedule_master_2000.Controllers
 {
@@ -22,8 +23,14 @@ namespace Schedule_master_2000.Controllers
             _userService = userService;
         }
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string returnUrl)
         {
+            //LoginViewModel model = new LoginViewModel
+            //{
+            //    ReturnURL = returnUrl,
+
+
+            //}
             return View();
         }
 

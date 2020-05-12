@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Schedule_master_2000.ViewModels
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public string ReturnURL { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
     }
 }
