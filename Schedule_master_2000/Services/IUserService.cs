@@ -10,9 +10,7 @@ namespace Schedule_master_2000.Services
     {
         User GetOne(int userid);
         List<User> GetAll();
-
         void DeleteUser(int id);
-
-
+        bool CheckIfUserExists(string email);
     }
 }

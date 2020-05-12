@@ -1,4 +1,5 @@
-﻿using Schedule_master_2000.Models;
+﻿using Npgsql;
+using Schedule_master_2000.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -68,6 +69,17 @@ namespace Schedule_master_2000.Services
             using var reader = command.ExecuteReader();
         }
 
+        public bool CheckIfUserExists(string email)
+        {
+            using var command = _connection.CreateCommand();
+            command.CommandText = $"SELECT true FROM users WHERE email = '{email}'";
+            var param = command.CreateParameter();
+            param.ParameterName = "email";
+            param.Value = email;
+            bool UserExist = Convert.ToBoolean(command.ExecuteScalar());
+
+            return UserExist;
+        }
     }
 }
 

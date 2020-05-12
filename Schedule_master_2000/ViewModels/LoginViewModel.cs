@@ -10,7 +10,8 @@ namespace Schedule_master_2000.ViewModels
     public class LoginViewModel
     {
         [Required]
-        public string Username { get; set; }
+        [EmailAddress(ErrorMessage = "Invalid E-mail format.")]
+        public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
