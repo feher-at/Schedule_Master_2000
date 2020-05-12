@@ -38,3 +38,15 @@ CREATE TABLE tasks(
     content VARCHAR(255) NOT NULL,
     img VARCHAR(50) NOT NULL
 );
+
+CREATE OR REPLACE FUNCTION delete_schedule(p_user_id INTEGER, p_schedule_id INTEGER) RETURNS VOID AS $$
+DECLARE
+    v_user_id INTEGER;
+BEGIN
+    SELECT q.user_id FROM schedules AS q WHERE q.scheduleid = p_schedule_id INTO v_user_id;
+    IF v_user_id <> p_user_id THEN
+        RAISE EXCEPTION 'Not authorized' USING ERRCODE = 45000;
+    END IF;
+    DELETE FROM schedule WHERE scheduleid = p_schedule_id;
+END;
+$$ LANGUAGE plpgsql;
