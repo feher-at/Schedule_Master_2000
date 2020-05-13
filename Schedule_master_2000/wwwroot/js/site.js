@@ -15,8 +15,27 @@ function GetSchedules() {
     xhr.open('GET', '/Home/Schedule', true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            alert(xhr.responseText);
+            onSchedulesReceived(xhr.responseText);
         }
     }
     xhr.send();
 }
+
+function onSchedulesReceived(response) {
+    const userSchedules = JSON.parse(response);
+    const divEl = document.getElementById('home');
+    while (divEl.firstChild) {
+        divEl.removeChild(divEl.firstChild);
+    }
+
+    if (userSchedules.schedules.length == 0) {
+        const homeDiv = document.createElement("div");
+        homeDiv.className = "container";
+        const homeH1 = document.createElement("h1");
+        homeH1.textContent = "You have no schedules";
+
+        homeDiv.appendChild(homeH1);
+        divEl.appendChild(homeDiv);
+    }
+}
+
