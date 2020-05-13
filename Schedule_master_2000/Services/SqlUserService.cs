@@ -43,6 +43,15 @@ namespace Schedule_master_2000.Services
             reader.Read();
             return ToUser(reader);
         }
+        public User GetOne(string email)
+        {
+            using var command = _connection.CreateCommand();
+            command.CommandText = $"SELECT * FROM users WHERE email = '{email}'";
+
+            using var reader = command.ExecuteReader();
+            reader.Read();
+            return ToUser(reader);
+        }
 
         public List<User> GetAll()
         {

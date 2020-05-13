@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script src="~/js/dynamic_login_page.js"></script>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet" />
 <div class="jumbotron jumbotron-fluid vertical-center" id="home">
@@ -12,7 +13,7 @@
         <form class="form-inline justify-content-center">
             @if (Context.User.Identity.IsAuthenticated)
             {
-                <a asp-controller="Home" asp-action="Schedule" class="btn btn-dark my-2 my-sm-0 m-2">Go to My Schedule</a>
+                <a class="btn btn-dark my-2 my-sm-0 m-2" onclick="GetSchedules()" ;>Go to My Schedule</a>
                 <a asp-controller="Account" asp-action="LogOut" class="btn btn-danger my-2 my-sm-0 m-2">Log Out</a>
             }
             else

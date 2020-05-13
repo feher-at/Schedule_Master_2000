@@ -7,7 +7,7 @@ using Schedule_master_2000.Models;
 
 namespace Schedule_master_2000.Services
 {
-    interface IColumnService
+    public interface IColumnService
     {
         List<Column> GetAllCollumnToOneUser(int userID);
         List<Column> GetOneScheduleAllColumn(int scheduleID);

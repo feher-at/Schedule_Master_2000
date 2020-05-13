@@ -7,7 +7,7 @@ using Schedule_master_2000.Models;
 
 namespace Schedule_master_2000.Services
 {
-    interface ISlotService
+    public interface ISlotService
     {
         List<Slot> GetOneColumnAllSlots(int columnID);
         Slot GetOne(int slotID);
