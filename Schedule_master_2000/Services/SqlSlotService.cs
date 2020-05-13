@@ -14,9 +14,11 @@ namespace Schedule_master_2000.Services
             return new Slot(
                (int)reader["slotid"],
                (int)reader["schedule_columnsid"],
-               (int)reader["userid"]);
-                
-               
+               (int)reader["userid"],
+               (int)reader["slot_hour"]);
+
+
+
 
         }
 
@@ -90,7 +92,7 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
         }
 
-        public void InsertSlot(int columnID, int userID)
+        public void InsertSlot(int columnID, int userID,int hour)
         {
             using var command = _connection.CreateCommand();
 
@@ -100,9 +102,14 @@ namespace Schedule_master_2000.Services
             var columnIDParam = command.CreateParameter();
             columnIDParam.ParameterName = "columnid";
             columnIDParam.Value = columnID;
-            command.CommandText = $"INSERT INTO slots(schedule_columnsid, userid) VALUES (@columnid, @userid)";
+
+            var hourParam = command.CreateParameter();
+            hourParam.ParameterName = "hour";
+            hourParam.Value = hour;
+            command.CommandText = $"INSERT INTO slots(schedule_columnsid, userid,slot_hour) VALUES (@columnid, @userid, @hour)";
             command.Parameters.Add(userIDParam);
             command.Parameters.Add(columnIDParam);
+            command.Parameters.Add(hourParam);
             HandleExecuteNonQuery(command);
         }
 

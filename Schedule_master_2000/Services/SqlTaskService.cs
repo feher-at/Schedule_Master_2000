@@ -13,15 +13,10 @@ namespace Schedule_master_2000.Services
         {
             return new Tasks(
                (int)reader["taskid"],
-               (int)reader["slotid"],
-               (int)reader["scheduleid"],
-               (int)reader["schedule_columnsid"],
                (int)reader["userid"],
                (string)reader["title"],
-               (DateTime)reader["taskdate"],
-               (int)reader["taskhour"],
-               (string)reader["content"],
-               (string)reader["img"]);
+               (string)reader["content"];
+              
 
         }
 
@@ -36,7 +31,7 @@ namespace Schedule_master_2000.Services
         {
             List<Tasks> tasks = new List<Tasks>();
             using var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM tasks WHERE slotid = @userid";
+            command.CommandText = "SELECT * FROM tasks WHERE userid = @userid";
 
             var param = command.CreateParameter();
             param.ParameterName = "userid";
@@ -51,24 +46,24 @@ namespace Schedule_master_2000.Services
             return tasks;
         }
 
-        public List<Tasks> GetOneSlotAllTasks(int slotID)
-        {
-            List<Tasks> tasks = new List<Tasks>();
-            using var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM tasks WHERE slotid = @slotid";
+        //public List<Tasks> GetOneSlotAllTasks(int slotID)
+        //{
+        //    List<Tasks> tasks = new List<Tasks>();
+        //    using var command = _connection.CreateCommand();
+        //    command.CommandText = "SELECT * FROM tasks WHERE slotid = @slotid";
 
-            var param = command.CreateParameter();
-            param.ParameterName = "slotid";
-            param.Value = slotID;
+        //    var param = command.CreateParameter();
+        //    param.ParameterName = "slotid";
+        //    param.Value = slotID;
 
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                tasks.Add(ToTasks(reader));
-            }
+        //    using var reader = command.ExecuteReader();
+        //    while (reader.Read())
+        //    {
+        //        tasks.Add(ToTasks(reader));
+        //    }
 
-            return tasks;
-        }
+        //    return tasks;
+        //}
 
         public Tasks GetOne(int taskID)
         {
@@ -112,7 +107,7 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
         }
 
-        public void UpdateTask(int userID, int taskID, string title, DateTime date, int hour,string content,string imgPath)
+        public void UpdateTask(int userID, int taskID, string title, string content)
         {
             using var command = _connection.CreateCommand();
 
@@ -128,85 +123,47 @@ namespace Schedule_master_2000.Services
             titleParam.ParameterName = "title";
             titleParam.Value = (object)title ?? DBNull.Value;
 
-            var dateParam = command.CreateParameter();
-            dateParam.ParameterName = "date";
-            dateParam.Value = (object)date ?? DBNull.Value;
-
-            var hourParam = command.CreateParameter();
-            hourParam.ParameterName = "hour";
-            hourParam.Value = hour;
+            
 
             var contentParam = command.CreateParameter();
             contentParam.ParameterName = "content";
             contentParam.Value = (object)content ?? DBNull.Value;
 
-            var imgPathParam = command.CreateParameter();
-            imgPathParam.ParameterName = "imgPath";
-            imgPathParam.Value = (object)imgPath ?? DBNull.Value;
+            
 
-            command.CommandText = "SELECT update_task(@userId, @taskid, @title, @date, @hour, @content, @imgPath)";
+            command.CommandText = "SELECT update_task(@userId, @taskid, @title, @content )";
             command.Parameters.Add(userIDParam);
             command.Parameters.Add(taskIDParam);
             command.Parameters.Add(titleParam);
-            command.Parameters.Add(dateParam);
-            command.Parameters.Add(hourParam);
             command.Parameters.Add(contentParam);
-            command.Parameters.Add(imgPathParam);
             HandleExecuteNonQuery(command);
 
             
         }
 
-        public void InsertTask(int slotID, int scheduleID,int userID,int columnID, string title, DateTime date, int hour, string content,string imgPath)
+        public void InsertTask(int userID, string title, string content)
         {
             using var command = _connection.CreateCommand();
-
-            var slotIDParam = command.CreateParameter();
-            slotIDParam.ParameterName = "slotid";
-            slotIDParam.Value = slotID;
-
-            var scheduleIDParam = command.CreateParameter();
-            scheduleIDParam.ParameterName = "scheduleid";
-            scheduleIDParam.Value = scheduleID;
 
             var userIDParam = command.CreateParameter();
             userIDParam.ParameterName = "userid";
             userIDParam.Value = userID;
 
-            var columnIDParam = command.CreateParameter();
-            columnIDParam.ParameterName = "columnid";
-            columnIDParam.Value = columnID;
-
             var TitleParam = command.CreateParameter();
             TitleParam.ParameterName = "title";
             TitleParam.Value = title;
-
-            var DateParam = command.CreateParameter();
-            DateParam.ParameterName = "date";
-            DateParam.Value = date;
-
-            var HourParam = command.CreateParameter();
-            HourParam.ParameterName = "hour";
-            HourParam.Value = hour;
 
             var ContentParam = command.CreateParameter();
             ContentParam.ParameterName = "content";
             ContentParam.Value = content;
 
-            var imgPathParam = command.CreateParameter();
-            imgPathParam.ParameterName = "imgPath";
-            imgPathParam.Value = imgPath;
+            
 
-            command.CommandText = $"INSERT INTO tasks(userid,scheduleid,schedule_columnsid,slotid,taskdate,taskhour,title,content,img) VALUES (@userid, @scheduleid, @columnid, @slotid, @date, @hour, @title, @content, @imgPath)";
-            command.Parameters.Add(slotIDParam);
-            command.Parameters.Add(scheduleIDParam);
+            command.CommandText = $"INSERT INTO tasks(userid,title,content) VALUES (@userid, @title, @content)";
             command.Parameters.Add(userIDParam);
-            command.Parameters.Add(columnIDParam);
             command.Parameters.Add(TitleParam);
-            command.Parameters.Add(DateParam);
-            command.Parameters.Add(HourParam);
             command.Parameters.Add(ContentParam);
-            command.Parameters.Add(imgPathParam);
+            
             HandleExecuteNonQuery(command);
         }
 
