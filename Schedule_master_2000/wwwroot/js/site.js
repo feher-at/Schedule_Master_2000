@@ -7,3 +7,16 @@ $(".jumbotron").css({ height: $(window).height() + "px" });
 $(window).on("resize", function () {
     $(".jumbotron").css({ height: $(window).height() + "px" });
 });
+
+function GetSchedules() {
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/Home/Schedule', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            alert(xhr.responseText);
+        }
+    }
+    xhr.send();
+}
