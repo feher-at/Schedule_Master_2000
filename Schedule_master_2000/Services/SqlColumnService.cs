@@ -35,7 +35,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "userid";
             param.Value = userID;
-
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -54,7 +54,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "scheduleid";
             param.Value = scheduleID;
-
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -71,6 +71,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "columnid";
             param.Value = columnID;
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
 
             reader.Read();
@@ -85,6 +86,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "columnid";
             param.Value = columnID;
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
         }
 
@@ -96,6 +98,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "userid";
             param.Value = userID;
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
         }
 

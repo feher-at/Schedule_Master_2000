@@ -12,7 +12,7 @@ namespace Schedule_master_2000.Services
         private static Schedule ToSchedule(IDataReader reader)
         {
             return new Schedule(
-               (int)reader["schedule"],
+               (int)reader["scheduleid"],
                (string)reader["title"],
                (int)reader["userid"]
                
@@ -34,6 +34,8 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "userid";
             param.Value = userID;
+            command.Parameters.Add(param);
+            
 
             using var reader = command.ExecuteReader();
             while(reader.Read())
@@ -64,6 +66,8 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "scheduleid";
             param.Value = scheduleID;
+
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
             
             reader.Read();

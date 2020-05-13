@@ -15,7 +15,7 @@ namespace Schedule_master_2000.Services
                (int)reader["taskid"],
                (int)reader["userid"],
                (string)reader["title"],
-               (string)reader["content"];
+               (string)reader["content"]);
               
 
         }
@@ -36,6 +36,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "userid";
             param.Value = userID;
+            command.Parameters.Add(param);
 
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -72,6 +73,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "taskid";
             param.Value = taskID;
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
 
             reader.Read();

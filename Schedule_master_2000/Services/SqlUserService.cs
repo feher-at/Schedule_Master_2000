@@ -38,7 +38,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "userid";
             param.Value = userid;
-
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
             reader.Read();
             return ToUser(reader);
@@ -75,6 +75,7 @@ namespace Schedule_master_2000.Services
             var param = command.CreateParameter();
             param.ParameterName = "userid";
             param.Value = id;
+            command.Parameters.Add(param);
             using var reader = command.ExecuteReader();
         }
 

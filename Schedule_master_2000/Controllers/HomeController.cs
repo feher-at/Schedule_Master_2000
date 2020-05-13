@@ -52,9 +52,9 @@ namespace Schedule_master_2000.Controllers
             var claim = user.Claims.First(c => c.Type == ClaimTypes.Email);
             var email = claim.Value;
             User currentUser = _userService.GetOne(email);
-            List <Schedule> scheduleList =  new List<Schedule>( _scheduleService.GetOneUserAllSchedule(currentUser.ID));
-            List<Slot> slotList = new List<Slot>(_slotService.GetOneUsersAllSlots(currentUser.ID));
-            List<Tasks> taskList = new List<Tasks>(_taskService.GetOneUserAllTasks(currentUser.ID));
+            List <Schedule> scheduleList =  _scheduleService.GetOneUserAllSchedule(currentUser.ID);
+            List<Slot> slotList = _slotService.GetOneUsersAllSlots(currentUser.ID);
+            List<Tasks> taskList = _taskService.GetOneUserAllTasks(currentUser.ID);
             OneUserSchedules oneUserSchedules = new OneUserSchedules(currentUser, scheduleList, slotList, taskList);
             return Json(oneUserSchedules);
         }
