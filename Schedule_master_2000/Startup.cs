@@ -81,6 +81,10 @@ namespace Schedule_master_2000
                 });
             services.AddScoped<CustomCookieAuthenticationEvents>();
             services.AddScoped<IUserService, SqlUserService>();
+            services.AddScoped<IColumnService, SqlColumnService>();
+            services.AddScoped<IScheduleService, SqlScheduleService>();
+            services.AddScoped<ISlotService, SqlSlotService>();
+            services.AddScoped<ITaskService, SqlTaskService>();
             services.AddScoped<IDbConnection>(_ =>
             {
                 var connection = new NpgsqlConnection(connectionString);

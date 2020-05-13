@@ -17,3 +17,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
     loginDiv.style.display = "block";
     regDiv.style.display = "none";
 });
+

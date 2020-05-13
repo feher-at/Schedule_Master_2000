@@ -7,7 +7,7 @@ using Schedule_master_2000.Models;
 
 namespace Schedule_master_2000.Services
 {
-    interface IScheduleService
+    public interface IScheduleService
     {
         List<Schedule> GetOneUserAllSchedule(int userID);
         Schedule GetOne(int scheduleID);
