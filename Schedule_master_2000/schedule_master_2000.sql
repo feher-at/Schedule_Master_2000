@@ -48,7 +48,7 @@ CREATE TABLE tasks(
 
 CREATE OR REPLACE FUNCTION delete_schedule(p_userid INTEGER, p_scheduleid INTEGER) RETURNS VOID AS $$
 DECLARE
-    v_user_id INTEGER;
+    v_userid INTEGER;
 BEGIN
     SELECT q.userid FROM schedules AS q WHERE q.scheduleid = p_scheduleid INTO v_userid;
     IF v_userid <> p_userid THEN
@@ -99,7 +99,7 @@ BEGIN
     UPDATE
         schedule_columns
     SET
-        title = p_title,
+        title = p_title
     WHERE
         schedule_columnsid = p_columnid AND
         userid = p_userid;
