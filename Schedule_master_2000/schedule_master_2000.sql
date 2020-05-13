@@ -106,6 +106,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION update_task(p_userid INTEGER, p_taskid INTEGER, p_title TEXT,p_date TIMESTAMP, p_hour INTEGER, p_content TEXT, p_imgpath TEXT) RETURNS VOID AS $$
+DECLARE
+    v_userid INTEGER;
+BEGIN
+    SELECT q.userid FROM tasks AS q WHERE q.taskid = p_taskid INTO v_userid;
+    IF v_userid <> p_userid THEN
+        RAISE EXCEPTION 'Not authorized' USING ERRCODE = 45000;
+    END IF;
+    UPDATE
+        tasks
+    SET
+        title = p_title,
+        taskdate = p_date,
+        taskhour = p_hour,
+        content = p_content,
+        img = p_imgpath
+    WHERE
+        taskid = p_taskid AND
+        userid = p_userid;
+END;
+$$ LANGUAGE plpgsql;
 
 INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', 'admin', 'admin@master.com', 'admin');
 INSERT INTO users(username, user_password, email, user_role) VALUES ('test', 'test', 'test@testmail.com', 'user');
