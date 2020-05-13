@@ -50,8 +50,9 @@ function onSchedulesReceived(response) {
             const schedule = userSchedules[i];
             const scheduleH1 = document.createElement("h1");
             scheduleH1.textContent = `${schedule.title}`;
+            homeDiv.appendChild(scheduleH1);
         }
-        
+        divEl.appendChild(homeDiv);
     }
 }
 
