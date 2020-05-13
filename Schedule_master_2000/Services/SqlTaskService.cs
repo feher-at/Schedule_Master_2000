@@ -100,6 +100,18 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
         }
 
+        public void DeleteAllTasks(int userID)
+        {
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"DELETE * FROM tasks WHERE userid = @userid";
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "userid";
+            userIdParam.Value = userID;
+            command.Parameters.Add(userIdParam);
+            HandleExecuteNonQuery(command);
+        }
+
         public void UpdateTask(int userID, int taskID, string title, DateTime date, int hour,string content,string imgPath)
         {
             using var command = _connection.CreateCommand();

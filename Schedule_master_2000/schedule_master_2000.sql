@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS slots;
 DROP TABLE IF EXISTS schedule_columns;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS users;
+DROP FUNCTION delete_schedule(integer,integer);
 
 CREATE TABLE users(
     userid SERIAL PRIMARY KEY,
@@ -48,7 +49,7 @@ CREATE TABLE tasks(
 
 CREATE OR REPLACE FUNCTION delete_schedule(p_userid INTEGER, p_scheduleid INTEGER) RETURNS VOID AS $$
 DECLARE
-    v_user_id INTEGER;
+    v_userid INTEGER;
 BEGIN
     SELECT q.userid FROM schedules AS q WHERE q.scheduleid = p_scheduleid INTO v_userid;
     IF v_userid <> p_userid THEN
@@ -99,7 +100,7 @@ BEGIN
     UPDATE
         schedule_columns
     SET
-        title = p_title,
+        title = p_title
     WHERE
         schedule_columnsid = p_columnid AND
         userid = p_userid;
@@ -127,6 +128,8 @@ BEGIN
         userid = p_userid;
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', 'admin', 'admin@master.com', 'admin');
 INSERT INTO users(username, user_password, email, user_role) VALUES ('test', 'test', 'test@testmail.com', 'user');

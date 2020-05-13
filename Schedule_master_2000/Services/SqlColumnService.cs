@@ -88,6 +88,18 @@ namespace Schedule_master_2000.Services
             using var reader = command.ExecuteReader();
         }
 
+        public void DeleteAllColumn(int userID)
+        {
+            using var command = _connection.CreateCommand();
+            command.CommandText = "Delete * From schedule_columns Where userid = @userid";
+
+            var param = command.CreateParameter();
+            param.ParameterName = "userid";
+            param.Value = userID;
+            using var reader = command.ExecuteReader();
+        }
+
+
         public void InsertColumn(int scheduleID, int userID,string title)
         {
             using var command = _connection.CreateCommand();
