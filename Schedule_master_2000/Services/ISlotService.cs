@@ -12,6 +12,6 @@ namespace Schedule_master_2000.Services
         List<Slot> GetOneColumnAllSlots(int columnID);
         Slot GetOne(int slotID);
         List<Slot> GetOneUsersAllSlots(int userID);
-        void InsertSlot(int columnID, int userID);
+        void InsertSlot(int columnID, int userID, int hour);
     }
 }

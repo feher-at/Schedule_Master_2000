@@ -1,8 +1,11 @@
+DROP TABLE IF EXISTS slots_with_tasks;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS slots;
 DROP TABLE IF EXISTS schedule_columns;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS users;
+
+DROP FUNCTION delete_schedule(integer,integer);
 
 CREATE TABLE users(
     userid SERIAL PRIMARY KEY,
@@ -28,22 +31,24 @@ CREATE TABLE schedule_columns(
 CREATE TABLE slots(
     slotid SERIAL PRIMARY KEY,
     schedule_columnsID INT REFERENCES schedule_columns(schedule_columnsID) ON DELETE CASCADE,
-    userid INT REFERENCES users(userid) ON DELETE CASCADE
-
+    userid INT REFERENCES users(userid) ON DELETE CASCADE,
+    slot_hour INT
 );
 
 CREATE TABLE tasks(
 
     taskid SERIAL PRIMARY KEY,
     userid INT REFERENCES users(userid) ON DELETE CASCADE,
-    scheduleid INT REFERENCES schedules(scheduleid) ON DELETE CASCADE,
-    schedule_columnsID INT REFERENCES schedule_columns(schedule_columnsID) ON DELETE CASCADE,
-    slotid INT REFERENCES slots(slotid) ON DELETE CASCADE,
-    taskDate TIMESTAMP,
-    taskHour int,
     title VARCHAR(50) NOT NULL,
-    content VARCHAR(255) NOT NULL,
-    img VARCHAR(50) NOT NULL
+    content VARCHAR(255) NOT NULL
+   
+);
+
+CREATE TABLE slots_with_tasks(
+    id SERIAL PRIMARY KEY,
+    slotid INT REFERENCES slots(slotid) ON DELETE CASCADE,
+    userid INT REFERENCES users(userid) ON DELETE CASCADE,
+    taskid INT REFERENCES tasks(taskid) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE FUNCTION delete_schedule(p_userid INTEGER, p_scheduleid INTEGER) RETURNS VOID AS $$
@@ -106,7 +111,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION update_task(p_userid INTEGER, p_taskid INTEGER, p_title TEXT,p_date TIMESTAMP, p_hour INTEGER, p_content TEXT, p_imgpath TEXT) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION update_task(p_userid INTEGER, p_taskid INTEGER, p_title TEXT, p_content TEXT ) RETURNS VOID AS $$
 DECLARE
     v_userid INTEGER;
 BEGIN
@@ -118,16 +123,206 @@ BEGIN
         tasks
     SET
         title = p_title,
-        taskdate = p_date,
-        taskhour = p_hour,
-        content = p_content,
-        img = p_imgpath
+        content = p_content
+        
     WHERE
         taskid = p_taskid AND
         userid = p_userid;
 END;
 $$ LANGUAGE plpgsql;
 
+
+
 INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', 'admin', 'admin@master.com', 'admin');
 INSERT INTO users(username, user_password, email, user_role) VALUES ('test', 'test', 'test@testmail.com', 'user');
 INSERT INTO users(username, user_password, email, user_role) VALUES ('adamsilent', 'asdasd', 'adam.csondes@gmail.com', 'user');
+INSERT INTO schedules(userid,title) VALUES(2,'test schedule');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Monday');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Tuesday ');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Wednesday');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Thursday ');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Friday');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Saturday');
+INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Sunday');
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(1,2,24);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(2,2,24);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(3,2,24);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(4,2,24);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(5,2,24);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(6,2,24);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,1);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,2);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,3);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,4);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,5);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,6);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,7);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,8);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,9);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,10);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,11);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,12);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,13);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,14);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,15);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,16);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,17);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,18);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,19);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,20);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,21);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,22);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,23);
+INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,24);
+INSERT INTO tasks(userid,title,content)VALUES(2,'breakfast','i ate some breakfast');
+INSERT INTO tasks(userid,title,content)VALUES(2,'sleep','i am sleeping');
+INSERT INTO tasks(userid,title,content)VALUES(2,'shower','i take a shower');
+INSERT INTO tasks(userid,title,content)VALUES(2,'shop','i need to go to the shop');
+INSERT INTO tasks(userid,title,content)VALUES(2,'exercise','i go to the gym');
+INSERT INTO tasks(userid,title,content)VALUES(2,'launch','i have launch');
+INSERT INTO tasks(userid,title,content)VALUES(2,'cinema','i go to the cinema');
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(3,2,2);
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(31,2,1);
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(56,2,3);
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(81,2,4);
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(111,2,5);
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(132,2,6);
+INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(164,2,7);

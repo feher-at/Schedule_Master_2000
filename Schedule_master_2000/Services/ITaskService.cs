@@ -10,7 +10,6 @@ namespace Schedule_master_2000.Services
     public interface ITaskService
     {
         List<Tasks> GetOneUserAllTasks(int userID);
-        List<Tasks> GetOneSlotAllTasks(int slotID);
         Tasks GetOne(int taskID);
         void DeleteTask(int taskID,int userID);
 

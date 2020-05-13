@@ -8,28 +8,19 @@ namespace Schedule_master_2000.Models
     public class Tasks
     {
         public int TaskID { get; private set; }
-        public int SlotID { get; private set; }
-        public int ScheduleID { get; private set; }
-        public int ColumnID { get; private set; }
         public int UserID { get; private set; }
         public string Title { get; set; }
-        public DateTime Date { get; set; }
-        public int Hour { get; set; }
+     
         public string Content { get; set; }
-        public string ImgPath { get; set; }
+        
 
-        public Tasks(int taskID, int slotID,int scheduleID,int columnID,int userID,string title, DateTime date, int hour, string content, string imgPath)
+        public Tasks(int taskID,int userID,string title, string content)
         {
             TaskID = taskID;
-            SlotID = slotID;
-            ScheduleID = scheduleID;
-            ColumnID = columnID;
             UserID = userID;
             Title = title;
-            Date = date;
-            Hour = hour;
             Content = content;
-            ImgPath = imgPath;
+            
 
         }
 

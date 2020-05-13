@@ -88,6 +88,18 @@ namespace Schedule_master_2000.Services
 
         }
 
+        public void DeleteAllSchedule(int userID)
+        {
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"DELETE * FROM schedules WHERE userid = @userid";
+            var userIdParam = command.CreateParameter();
+            userIdParam.ParameterName = "userid";
+            userIdParam.Value = userID;
+            command.Parameters.Add(userIdParam);
+            HandleExecuteNonQuery(command);
+        }
+
         public void InsertSchedule(int userID, string title)
         {
             using var command = _connection.CreateCommand();
