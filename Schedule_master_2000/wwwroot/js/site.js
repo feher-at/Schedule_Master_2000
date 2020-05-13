@@ -22,13 +22,13 @@ function GetSchedules() {
 }
 
 function onSchedulesReceived(response) {
-    const userSchedules = JSON.parse(response);
+    const userSchedulesModel = JSON.parse(response);
     const divEl = document.getElementById('home');
     while (divEl.firstChild) {
         divEl.removeChild(divEl.firstChild);
     }
 
-    if (userSchedules.schedules.length == 0) {
+    if (userSchedulesModel.schedules.length == 0) {
         const homeDiv = document.createElement("div");
         homeDiv.className = "container";
         const homeH1 = document.createElement("h1");
@@ -36,15 +36,78 @@ function onSchedulesReceived(response) {
         const homeButton = document.createElement("button");
         homeButton.textContent = "Create Schedule";
         homeButton.className = "btn btn-success my-2 my-sm-0";
-        homeButton.addEventListener("click", () => { addNewTask(); }, false);
+        homeButton.addEventListener("click", () => { addNewSchedule(); }, false);
 
         homeDiv.appendChild(homeH1);
         homeDiv.appendChild(homeButton);
         divEl.appendChild(homeDiv);
     }
+    else {
+        const homeDiv = document.createElement("div");
+        homeDiv.className = "container";
+        const userSchedules = userSchedulesModel.schedules
+        for (let i = 0; i < userSchedules.length; i++) {
+            const schedule = userSchedules[i];
+            const scheduleH1 = document.createElement("h1");
+            scheduleH1.textContent = `${schedule.title}`;
+        }
+        
+    }
 }
 
-function addNewTask() {
-    alert("Cant create new tasks yet! ")
+function addNewSchedule() {
+    const divEl = document.getElementById('home');
+    while (divEl.firstChild) {
+        divEl.removeChild(divEl.firstChild);
+    }
+    const homeDiv = document.createElement("div");
+    homeDiv.className = "container1";
+    const homeButton = document.createElement("button");
+    homeButton.className = "add_form_field";
+    homeButton.textContent = "Add new column";
+    const homeSubmit = document.createElement("button");
+    homeSubmit.className = "btn btn-success my-2 my-sm-0";
+    homeSubmit.textContent = "Create Schedule";
+    homeSubmit.addEventListener("click", () => { createSchedule(); }, false);
+
+    homeDiv.appendChild(homeSubmit);
+
+    homeDiv.appendChild(homeButton);
+    divEl.appendChild(homeDiv);
+
+    var max_fields = 8;
+    var wrapper = $(".container1");
+    var add_button = $(".add_form_field");
+
+    var x = 1;
+    $(add_button).click(function (e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div><input type="text" name="mytext[]" class="inputField"/><a href="#" class="delete">Delete</a></div>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function (e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
+
+
 }
+
+function createSchedule() {
+    var columns = document.getElementsByClassName("inputField");
+    console.log(columns)
+    for (let i = 0; i < columns.length; i++) {
+        const column = columns[i];
+        console.log(column.value);
+    }
+
+}
+
+
 
