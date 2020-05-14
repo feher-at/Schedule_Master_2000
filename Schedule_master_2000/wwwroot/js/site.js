@@ -90,14 +90,14 @@ function sendScheduleData(userID) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            alert(xhr.responseText);
+            addNewColumns(xhr.responseText);
         }
     }
     console.log(schedule);
     xhr.send(JSON.stringify(schedule));
 }
 
-function addNewColumns(userID) {
+function addNewColumns(schedule) {
     const divEl = document.getElementById('home');
     while (divEl.firstChild) {
         divEl.removeChild(divEl.firstChild);
@@ -110,7 +110,7 @@ function addNewColumns(userID) {
     const homeSubmit = document.createElement("button");
     homeSubmit.className = "btn btn-success my-2 my-sm-0";
     homeSubmit.textContent = "Create Schedule";
-    homeSubmit.addEventListener("click", () => { createSchedule(userID); }, false);
+    homeSubmit.addEventListener("click", () => { createColumns(schedule); }, false);
 
 
     homeDiv.appendChild(homeButton);
@@ -144,21 +144,24 @@ function addNewColumns(userID) {
 
 
 
-function createColumns() {
+function createColumns(schedule) {
+    console.log(schedule);
+    var currentSchedule = JSON.parse(schedule)
     var columns = document.getElementsByClassName("inputField");
     var columnsList = [];
     if (columns.length > 0) {
         for (let i = 0; i < columns.length; i++) {
             var column = columns[i];
-            columnsList.push(column.value)
+            columnModel = { UserID: parseInt(`${currentSchedule.userID}`), ScheduleID: parseInt(`${currentSchedule.scheduleID}`), Title: `${column.value}` }
+            columnsList.push(columnModel)
         }
         var xhr = new XMLHttpRequest();
 
-        xhr.open('POST', '/Home/NewSchedule', true);
+        xhr.open('POST', '/Home/NewColumn', true);
         xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                alert(xhr.responseText);
+                GetSchedules();
             }
         }
         console.log(JSON.stringify(columnsList));

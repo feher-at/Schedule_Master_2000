@@ -62,9 +62,23 @@ namespace Schedule_master_2000.Controllers
         [HttpPost]
         public IActionResult NewSchedule([FromBody] Schedule schedule)
         {
-            _scheduleService.InsertSchedule(schedule.UserID, schedule.Title);
+            int scheduleId = _scheduleService.InsertSchedule(schedule.UserID, schedule.Title);
+            schedule.ScheduleID = scheduleId;
             return Json(schedule);
+
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult NewColumn([FromBody] List<Column> columnList)
+        {
+            foreach(Column column in columnList)
+            {
+                _columnService.InsertColumn(column.ScheduleID, column.UserID, column.Title);
+            }
+            return Content("success");
 
         }
     }
 }
+

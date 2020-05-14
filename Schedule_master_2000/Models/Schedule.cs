@@ -21,12 +21,6 @@ namespace Schedule_master_2000.Models
             UserID = userID;
 
         }
-        public Schedule(string title, int userID)
-        {
-            Title = title;
-            UserID = userID;
-
-        }
 
         public Schedule()
         {

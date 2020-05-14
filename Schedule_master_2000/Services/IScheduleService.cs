@@ -14,6 +14,6 @@ namespace Schedule_master_2000.Services
         List<Schedule> GetAll();
         void DeleteSchedule(int userID, int scheduleID);
         void UpdateSchedule(int userID, int ScheduleID, string title);
-        void InsertSchedule(int userID, string title);
+        int InsertSchedule(int userID, string title);
     }
 }
