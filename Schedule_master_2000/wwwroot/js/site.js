@@ -24,6 +24,7 @@ function GetSchedules() {
 
 function onSchedulesReceived(response) {
     const userSchedulesModel = JSON.parse(response);
+    const userID = userSchedulesModel.user.id;
     const divEl = document.getElementById('home');
     while (divEl.firstChild) {
         divEl.removeChild(divEl.firstChild);
@@ -37,7 +38,7 @@ function onSchedulesReceived(response) {
         const homeButton = document.createElement("button");
         homeButton.textContent = "Create Schedule";
         homeButton.className = "btn btn-success my-2 my-sm-0";
-        homeButton.addEventListener("click", () => { addNewSchedule(); }, false);
+        homeButton.addEventListener("click", () => { createSchedule(userID); }, false);
 
         homeDiv.appendChild(homeH1);
         homeDiv.appendChild(homeButton);
@@ -143,8 +144,48 @@ function SelectValue(userScheduleModel) {
     }
 
 }
+function createSchedule(userID) {
+    const divEl = document.getElementById('home');
+    while (divEl.firstChild) {
+        divEl.removeChild(divEl.firstChild);
+    }
+    const homeDiv = document.createElement("div");
+    homeDiv.className = "container1";
+    const homeH1 = document.createElement("h1");
+    homeH1.textContent = "Enter the title of your schedule here";
+    const homeButton = document.createElement("button");
+    homeButton.textContent = "Create Schedule";
+    homeButton.addEventListener("click", () => { sendScheduleData(userID); }, false)
+    const homeInput = document.createElement("input");
+    homeInput.type = "text";
+    homeInput.id = "scheduleTitleInput";
 
-function addNewSchedule() {
+    homeDiv.appendChild(homeH1);
+    homeDiv.appendChild(homeInput);
+    homeDiv.appendChild(homeButton);
+
+    divEl.appendChild(homeDiv)
+}
+
+function sendScheduleData(userID) {
+    var scheduleTitle = document.getElementById("scheduleTitleInput");
+
+    var schedule = { Title: `${scheduleTitle.value}`, UserID: parseInt(`${userID}`) };
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/Home/NewSchedule', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            addNewColumns(xhr.responseText);
+        }
+    }
+    console.log(schedule);
+    xhr.send(JSON.stringify(schedule));
+}
+
+function addNewColumns(schedule) {
     const divEl = document.getElementById('home');
     while (divEl.firstChild) {
         divEl.removeChild(divEl.firstChild);
@@ -157,11 +198,12 @@ function addNewSchedule() {
     const homeSubmit = document.createElement("button");
     homeSubmit.className = "btn btn-success my-2 my-sm-0";
     homeSubmit.textContent = "Create Schedule";
-    homeSubmit.addEventListener("click", () => { createSchedule(); }, false);
+    homeSubmit.addEventListener("click", () => { createColumns(schedule); }, false);
 
-    homeDiv.appendChild(homeSubmit);
 
     homeDiv.appendChild(homeButton);
+    homeDiv.appendChild(homeSubmit);
+
     divEl.appendChild(homeDiv);
 
     var max_fields = 8;
@@ -173,7 +215,7 @@ function addNewSchedule() {
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper).append('<div><input type="text" name="mytext[]" class="inputField"/><a href="#" class="delete">Delete</a></div>'); //add input box
+            $(wrapper).append('<div><input type="text" name="mytext[]"class="inputField"/><a href="#" class="delete">Delete</a></div>'); //add input box
         } else {
             alert('You Reached the limits')
         }
@@ -188,12 +230,30 @@ function addNewSchedule() {
 
 }
 
-function createSchedule() {
+
+
+function createColumns(schedule) {
+    console.log(schedule);
+    var currentSchedule = JSON.parse(schedule)
     var columns = document.getElementsByClassName("inputField");
-    console.log(columns)
-    for (let i = 0; i < columns.length; i++) {
-        const column = columns[i];
-        console.log(column.value);
+    var columnsList = [];
+    if (columns.length > 0) {
+        for (let i = 0; i < columns.length; i++) {
+            var column = columns[i];
+            columnModel = { UserID: parseInt(`${currentSchedule.userID}`), ScheduleID: parseInt(`${currentSchedule.scheduleID}`), Title: `${column.value}` }
+            columnsList.push(columnModel)
+        }
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/Home/NewColumn', true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                GetSchedules();
+            }
+        }
+        console.log(JSON.stringify(columnsList));
+        xhr.send(JSON.stringify(columnsList));
     }
 
 }

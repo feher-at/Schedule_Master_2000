@@ -59,7 +59,27 @@ namespace Schedule_master_2000.Controllers
             OneUserSchedules oneUserSchedules = new OneUserSchedules(currentUser, scheduleList, columnList, slotList, taskList);
             return Json(oneUserSchedules);
         }
+        [Authorize]
+        [HttpPost]
+        public IActionResult NewSchedule([FromBody] Schedule schedule)
+        {
+            int scheduleId = _scheduleService.InsertSchedule(schedule.UserID, schedule.Title);
+            schedule.ScheduleID = scheduleId;
+            return Json(schedule);
 
-       
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult NewColumn([FromBody] List<Column> columnList)
+        {
+            foreach(Column column in columnList)
+            {
+                _columnService.InsertColumn(column.ScheduleID, column.UserID, column.Title);
+            }
+            return Content("success");
+
+        }
     }
 }
+
