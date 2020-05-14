@@ -58,5 +58,13 @@ namespace Schedule_master_2000.Controllers
             OneUserSchedules oneUserSchedules = new OneUserSchedules(currentUser, scheduleList, slotList, taskList);
             return Json(oneUserSchedules);
         }
+        [Authorize]
+        [HttpPost]
+        public IActionResult NewSchedule([FromBody] Schedule schedule)
+        {
+            _scheduleService.InsertSchedule(schedule.UserID, schedule.Title);
+            return Json(schedule);
+
+        }
     }
 }

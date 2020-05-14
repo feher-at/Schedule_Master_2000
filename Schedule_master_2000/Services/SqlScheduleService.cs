@@ -117,6 +117,7 @@ namespace Schedule_master_2000.Services
             command.CommandText = $"INSERT INTO schedules(userid,title) VALUES (@userid, @title)";
             command.Parameters.Add(userIdParam);
             command.Parameters.Add(titleParam);
+
             HandleExecuteNonQuery(command);
         }
 
