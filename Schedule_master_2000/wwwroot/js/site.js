@@ -21,6 +21,7 @@ function GetSchedules() {
     xhr.send();
 }
 
+
 function onSchedulesReceived(response) {
     const userSchedulesModel = JSON.parse(response);
     const divEl = document.getElementById('home');
@@ -43,17 +44,104 @@ function onSchedulesReceived(response) {
         divEl.appendChild(homeDiv);
     }
     else {
-        const homeDiv = document.createElement("div");
-        homeDiv.className = "container";
+        const scheduleDropDown = document.createElement("div");
+        scheduleDropDown.className = "schedule_container";
+        const SelectEl = document.createElement("select");
+        SelectEl.id = "SelectType";
+        SelectEl.addEventListener("change", () => { SelectValue(userSchedulesModel); },false)
+        const baseOptionEl = document.createElement("option");
+        baseOptionEl.value = "0";
+        baseOptionEl.textContent = "Schedules:";
+        SelectEl.appendChild(baseOptionEl);
         const userSchedules = userSchedulesModel.schedules
         for (let i = 0; i < userSchedules.length; i++) {
             const schedule = userSchedules[i];
-            const scheduleH1 = document.createElement("h1");
-            scheduleH1.textContent = `${schedule.title}`;
-            homeDiv.appendChild(scheduleH1);
+            const scheduleOptionEl = document.createElement("option");
+            scheduleOptionEl.value = `${schedule.scheduleID}`;
+            scheduleOptionEl.textContent = `${schedule.title}`;
+            
+            SelectEl.appendChild(scheduleOptionEl);
         }
-        divEl.appendChild(homeDiv);
+        scheduleDropDown.appendChild(SelectEl);
+        divEl.appendChild(scheduleDropDown);
     }
+}
+
+function SelectValue(userScheduleModel) {
+    let slotId = 1;
+    
+    let columnNumber = 0;
+    var MainDiv = document.getElementById("home");
+    var type = document.getElementById("SelectType");
+    var chosenScheduleID = type.options[type.selectedIndex].value;
+    var chosenScheduleTitle = type.options[type.selectedIndex].text;
+    const TitleDiv = document.createElement("div");
+    TitleDiv.className = "titleDiv";
+    TitleDiv.innerHTML = chosenScheduleTitle;
+
+    const hoursTableEl = document.createElement("table");
+    hoursTableEl.className = "hours_table";
+
+    for (let i = 1; i <= 24; i++) {
+        const hourTrEl = document.createElement("tr")
+        hourTrEl.innerHTML = i + ":00";
+        hourTrEl.className = "hours_tr";
+        hoursTableEl.appendChild(hourTrEl);
+
+    }
+    
+    const TableEl = document.createElement("table");
+    TableEl.className = "tableEl";
+    const userColumns = userScheduleModel.columns
+    const ColumnTrEl = document.createElement("tr");
+    ColumnTrEl.id = "columntr";
+
+    for (let i = 0; i < userColumns.length; i++) {
+        const column = userColumns[i];
+        if (column.scheduleID == chosenScheduleID) {
+            columnNumber++;
+            const columnEl = document.createElement('th');
+            columnEl.className = "column_th";
+            columnEl.id = "columnTh";
+            columnEl.innerHTML = column.title;
+            ColumnTrEl.appendChild(columnEl);
+            columnEl.innerHTML = column.title;
+            ColumnTrEl.appendChild(columnEl);
+        }
+    }
+    TableEl.appendChild(ColumnTrEl);
+    
+    for (let i = 1; i <= 24; i++) {
+        
+        const slotTr = document.createElement("tr")
+        slotTr.className = "columns_tr";
+        slotTr.id = "slotTr";
+        for (let index = 0; index < columnNumber; index++) {
+            slotThEl = document.createElement("th");
+            slotThEl.id = slotId + (index * 24);
+            
+            slotThEl.className = "slot_th";
+            slotTr.appendChild(slotThEl);
+        }
+        slotId++;
+        TableEl.appendChild(slotTr);
+
+        
+    }
+
+    TitleDiv.appendChild(TableEl);
+    MainDiv.appendChild(TitleDiv);
+    MainDiv.appendChild(hoursTableEl);
+
+    
+    
+    const usertasks = userScheduleModel.tasks;
+    for (let i = 0; i < usertasks.length; i++) {
+
+        const reservedSlot = document.getElementById(usertasks[i].slotID);
+        reservedSlot.innerHTML = usertasks[i].title;
+    }
+
 }
 
 function addNewSchedule() {

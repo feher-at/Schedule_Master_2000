@@ -55,8 +55,11 @@ namespace Schedule_master_2000.Controllers
             List <Schedule> scheduleList =  _scheduleService.GetOneUserAllSchedule(currentUser.ID);
             List<Slot> slotList = _slotService.GetOneUsersAllSlots(currentUser.ID);
             List<Tasks> taskList = _taskService.GetOneUserAllTasks(currentUser.ID);
-            OneUserSchedules oneUserSchedules = new OneUserSchedules(currentUser, scheduleList, slotList, taskList);
+            List<Column> columnList = _columnService.GetAllCollumnToOneUser(currentUser.ID);
+            OneUserSchedules oneUserSchedules = new OneUserSchedules(currentUser, scheduleList, columnList, slotList, taskList);
             return Json(oneUserSchedules);
         }
+
+       
     }
 }

@@ -14,6 +14,7 @@ namespace Schedule_master_2000.Services
             return new Tasks(
                (int)reader["taskid"],
                (int)reader["userid"],
+               (int)reader["slotid"],
                (string)reader["title"],
                (string)reader["content"]);
               
