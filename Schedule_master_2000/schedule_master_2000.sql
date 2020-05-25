@@ -10,7 +10,7 @@ DROP FUNCTION delete_schedule(integer,integer);
 CREATE TABLE users(
     userid SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    user_password VARCHAR(50) NOT NULL,
+    user_password VARCHAR(255) NOT NULL,
     email VARCHAR(50) NOT NULL,
     user_role VARCHAR(6) NOT NULL
 );
@@ -133,9 +133,9 @@ $$ LANGUAGE plpgsql;
 
 
 
-INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', 'admin', 'admin@master.com', 'admin');
-INSERT INTO users(username, user_password, email, user_role) VALUES ('test', 'test', 'test@testmail.com', 'user');
-INSERT INTO users(username, user_password, email, user_role) VALUES ('adamsilent', 'asdasd', 'adam.csondes@gmail.com', 'user');
+INSERT INTO users(username, user_password, email, user_role) VALUES ('admin', '5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8', 'admin@master.com', 'admin');
+INSERT INTO users(username, user_password, email, user_role) VALUES ('test', '5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8', 'test@testmail.com', 'user');
+INSERT INTO users(username, user_password, email, user_role) VALUES ('adamsilent', '5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8', 'adam.csondes@gmail.com', 'user');
 INSERT INTO schedules(userid,title) VALUES(2,'test schedule');
 INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Monday');
 INSERT INTO schedule_columns(scheduleid,userid,title) VALUES (1,2,'Tuesday ');

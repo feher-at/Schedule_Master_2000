@@ -36,25 +36,14 @@ namespace Schedule_master_2000.Controllers
         [HttpPost]
         public IActionResult Registration(RegistrationViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                // create and add user
-                // then redirect to somewhere
-            }
-
-            return View();
-        }
-
-        public IActionResult RegistrationComplete(RegistrationViewModel model)
-        {
             if (!Utility.IsValidEmail(model.Email))
             {
                 return RedirectToAction("Registration", "Account");
             }
 
-            //_loader.InsertUser(model.Username, model.Email, Utility.Hash(model.Password));
+            _userService.InsertUser(model.Username, model.Password, model.Email);
 
-            return View();
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -73,7 +62,7 @@ namespace Schedule_master_2000.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginAsync(LoginViewModel model)
         {
-            if (_userService.CheckIfUserExists(model.Email))
+            if (_userService.ValidateUser(model.Email, model.Password))
             {
                 var claims = new List<Claim> { new Claim(ClaimTypes.Email, model.Email) };
 
@@ -113,7 +102,8 @@ namespace Schedule_master_2000.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Account");
+                ModelState.AddModelError(string.Empty, "Incorrect E-mail and/or Password. Please try again.");
+                return View("Login", model);
             }
         }
     }

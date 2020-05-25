@@ -24,10 +24,5 @@ namespace Schedule_master_2000.Models
             Email = email;
             Role = role;
         }
-        public User()
-        {
-
-        }
-
     }
 }
