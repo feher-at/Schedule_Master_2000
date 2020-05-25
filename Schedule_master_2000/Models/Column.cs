@@ -8,8 +8,8 @@ namespace Schedule_master_2000.Models
     public class Column
     {
         public int ColumnID { get; private set; }
-        public int UserID { get; private set; }
-        public int ScheduleID { get; private set; }
+        public int UserID { get; set; }
+        public int ScheduleID { get; set; }
         public string Title { get; set; }
         
 
@@ -20,6 +20,10 @@ namespace Schedule_master_2000.Models
             ScheduleID = scheduleID;
             Title = title;
             
+        }
+        public Column()
+        {
+
         }
 
 

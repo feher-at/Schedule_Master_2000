@@ -8,17 +8,22 @@ namespace Schedule_master_2000.Models
 {
     public class Schedule
     {
-        public int ScheduleID { get; private set; }
+        public int ScheduleID { get; set; }
         
         public string Title { get; set; }
 
-        public int UserID { get; private set; }
+        public int UserID { get; set; }
 
         public Schedule(int scheduleID,string title, int userID)
         {
             ScheduleID = scheduleID;
             Title = title;
             UserID = userID;
+
+        }
+
+        public Schedule()
+        {
 
         }
     }

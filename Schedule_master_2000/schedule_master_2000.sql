@@ -39,6 +39,7 @@ CREATE TABLE tasks(
 
     taskid SERIAL PRIMARY KEY,
     userid INT REFERENCES users(userid) ON DELETE CASCADE,
+    slotid INT REFERENCES slots(slotid) ON DELETE CASCADE,
     title VARCHAR(50) NOT NULL,
     content VARCHAR(255) NOT NULL
    
@@ -312,13 +313,13 @@ INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,21);
 INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,22);
 INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,23);
 INSERT INTO slots(schedule_columnsid,userid,slot_hour) VALUES(7,2,24);
-INSERT INTO tasks(userid,title,content)VALUES(2,'breakfast','i ate some breakfast');
-INSERT INTO tasks(userid,title,content)VALUES(2,'sleep','i am sleeping');
-INSERT INTO tasks(userid,title,content)VALUES(2,'shower','i take a shower');
-INSERT INTO tasks(userid,title,content)VALUES(2,'shop','i need to go to the shop');
-INSERT INTO tasks(userid,title,content)VALUES(2,'exercise','i go to the gym');
-INSERT INTO tasks(userid,title,content)VALUES(2,'launch','i have launch');
-INSERT INTO tasks(userid,title,content)VALUES(2,'cinema','i go to the cinema');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,7,'breakfast','i ate some breakfast');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,27,'sleep','i am sleeping');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,56,'shower','i take a shower');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,82,'shop','i need to go to the shop');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,110,'exercise','i go to the gym');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,132,'launch','i have launch');
+INSERT INTO tasks(userid,slotid,title,content)VALUES(2,164,'cinema','i go to the cinema');
 INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(3,2,2);
 INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(31,2,1);
 INSERT INTO slots_with_tasks(slotid,userid,taskid)VALUES(56,2,3);

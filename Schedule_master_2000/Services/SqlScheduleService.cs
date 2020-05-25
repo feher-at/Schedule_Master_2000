@@ -104,7 +104,7 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
         }
 
-        public void InsertSchedule(int userID, string title)
+        public int InsertSchedule(int userID, string title)
         {
             using var command = _connection.CreateCommand();
 
@@ -114,10 +114,12 @@ namespace Schedule_master_2000.Services
             var titleParam = command.CreateParameter();
             titleParam.ParameterName = "title";
             titleParam.Value = title;
-            command.CommandText = $"INSERT INTO schedules(userid,title) VALUES (@userid, @title)";
+            command.CommandText = $"INSERT INTO schedules(userid,title) VALUES (@userid, @title) RETURNING scheduleid";
             command.Parameters.Add(userIdParam);
             command.Parameters.Add(titleParam);
-            HandleExecuteNonQuery(command);
+            int scheduleID = Convert.ToInt32(command.ExecuteScalar());
+
+            return scheduleID;
         }
 
         public void UpdateSchedule(int userID, int scheduleID,string title)

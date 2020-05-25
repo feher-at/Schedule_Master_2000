@@ -98,7 +98,7 @@ namespace Schedule_master_2000.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                return RedirectToAction("Schedule", "Home");
+                return RedirectToAction("Index", "Home");
             }
             else
             {

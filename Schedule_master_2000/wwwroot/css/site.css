@@ -19,9 +19,65 @@ for details on configuring this project to bundle and minify static web assets. 
     text-align: center;
     color: black;
 }
+.schedule_container {
+    position:relative;
+    left : 48%;
+    
+    bottom  : 55%;
+}
+.titleDiv {
+    position: relative;
+    left: 20%;
+    bottom: 1%;
+    border: 1px solid black;
+    width: 50%;
+    height: 100%;
+    font-size: 20px;
+}
+.hours_table{
+    position:relative;
+    right:31.53%;
+    top:6.5%;
+}
+.hours_tr {
+    height: 35px;
+    border: 1px solid black;
+}
+.columns_tr {
+    height: 35px;
+    
+    border: 1px solid black;
+}
+.column_th {
+    position: relative;
+    background-color: aqua;
+    width: 8%;
+    text-align: center;
+}
+.slot_th{
+    text-align:center;
+    font-size: 20px;
+}
+.drop_down_list {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
