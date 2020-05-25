@@ -11,6 +11,7 @@ using Schedule_master_2000.Domain;
 using Schedule_master_2000.ViewModels;
 using Schedule_master_2000.Services;
 using Microsoft.AspNetCore.Identity;
+using Schedule_master_2000.Models;
 
 namespace Schedule_master_2000.Controllers
 {
@@ -105,6 +106,16 @@ namespace Schedule_master_2000.Controllers
                 ModelState.AddModelError(string.Empty, "Incorrect E-mail and/or Password. Please try again.");
                 return View("Login", model);
             }
+        }
+
+        [HttpGet]
+        public IActionResult UserAccount()
+        {
+            string email = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+
+            User user = _userService.GetOne(email);
+
+            return View(user);
         }
     }
 }
