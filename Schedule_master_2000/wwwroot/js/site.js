@@ -1,14 +1,13 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-import { Collapse } from "../lib/bootstrap/dist/js/bootstrap.bundle";
-
 // Write your JavaScript code.
 $(".jumbotron").css({ height: $(window).height() + "px" });
 
 $(window).on("resize", function () {
     $(".jumbotron").css({ height: $(window).height() + "px" });
 });
+
 
 function GetSchedules() {
 
@@ -77,7 +76,7 @@ function SelectValue(userScheduleModel) {
     var MainDiv = document.getElementById("home");
     var type = document.getElementById("SelectType");
     var chosenScheduleID = type.options[type.selectedIndex].value;
-
+    console.log(userScheduleModel)
     const scheduleTable = document.createElement("table");
     scheduleTable.className = "calendar table table - bordered";
     
@@ -124,6 +123,8 @@ function SelectValue(userScheduleModel) {
         tablebodyEL.appendChild(rowTrEl)
 
     }
+    const userTasks = userScheduleModel.Tasks;
+    console.log(userTasks)
 
     scheduleTable.appendChild(tablebodyEL)
     MainDiv.appendChild(scheduleTable)
