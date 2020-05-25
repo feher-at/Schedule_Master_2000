@@ -128,6 +128,42 @@ namespace Schedule_master_2000.Services
 
             return UserExist;
         }
+
+        public void UpdateUser(int id, string username, string password, string email)
+        {
+            using var command = _connection.CreateCommand();
+            var idParam = command.CreateParameter();
+            idParam.ParameterName = "userid";
+            idParam.Value = id;
+            var usernameParam = command.CreateParameter();
+            usernameParam.ParameterName = "username";
+            usernameParam.Value = username;
+            var emailParam = command.CreateParameter();
+            emailParam.ParameterName = "email";
+            emailParam.Value = email;
+
+            if (password == null)
+            {
+                command.CommandText = $"UPDATE users SET username = @username, email = @email WHERE userid = @userid";
+                command.Parameters.Add(idParam);
+                command.Parameters.Add(usernameParam);
+                command.Parameters.Add(emailParam);
+            }
+            else
+            {
+                var passwordParam = command.CreateParameter();
+                passwordParam.ParameterName = "user_password";
+                passwordParam.Value = Utility.Hash(password);
+
+                command.CommandText = $"UPDATE users SET username = @username, user_password = @user_password, email = @email WHERE userid = @userid";
+                command.Parameters.Add(idParam);
+                command.Parameters.Add(usernameParam);
+                command.Parameters.Add(passwordParam);
+                command.Parameters.Add(emailParam);
+            }
+
+            HandleExecuteNonQuery(command);
+        }
     }
 }
 

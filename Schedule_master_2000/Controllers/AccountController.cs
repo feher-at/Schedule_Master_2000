@@ -117,5 +117,30 @@ namespace Schedule_master_2000.Controllers
 
             return View(user);
         }
+
+        [HttpGet]
+        public IActionResult ModifyUser()
+        {
+            string email = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+
+            User user = _userService.GetOne(email);
+            ModifyViewModel modifyModel = new ModifyViewModel()
+            {
+                User = user,
+                Modification = null
+            };
+
+            return View(modifyModel);
+        }
+
+        [HttpPost]
+        public IActionResult ModifyUser([FromForm(Name = "Modification.Id")] int id,
+            [FromForm(Name = "Modification.Username")] string username, [FromForm(Name = "Modification.Email")] string email,
+            [FromForm(Name = "Modification.Password")] string password)
+        {
+            _userService.UpdateUser(id, username, password, email);
+
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
