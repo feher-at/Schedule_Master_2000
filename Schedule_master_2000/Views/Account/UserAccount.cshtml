@@ -3,5 +3,13 @@
     ViewData["Title"] = "My Account";
 }
 
-<h1>UserAccount</h1>
-
+    <div class="container card mt-3 col-lg-4">
+        <div class="card-header display-4">
+            <span>Welcome, @Model.Username</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-text row">Id: @Model.ID</h5>
+            <h5 class="card-text row">E-mail: @Model.Email</h5>
+            <h5 class="card-text row">Account type: @Model.Role</h5>
+        </div>
+    </div>
