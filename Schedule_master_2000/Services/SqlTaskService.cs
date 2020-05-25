@@ -16,7 +16,8 @@ namespace Schedule_master_2000.Services
                (int)reader["userid"],
                (int)reader["slotid"],
                (string)reader["title"],
-               (string)reader["content"]);
+               (string)reader["content"],
+               (int)reader["lenght"]);
               
 
         }

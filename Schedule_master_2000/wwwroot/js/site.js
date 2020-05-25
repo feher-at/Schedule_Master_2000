@@ -103,16 +103,17 @@ function SelectValue(userScheduleModel) {
     const tablebodyEL = document.createElement("tbody");
 
 
-    for (let i = 0; i <= 24; i++) {
+    for (let i = 0; i <= 12; i++) {
         const rowTrEl = document.createElement("tr");
         const hourTdEL = document.createElement("td");
         hourTdEL.innerHTML = `${i}:00`
         rowTrEl.appendChild(hourTdEL);
 
-        for (let x = 0; x <= columnNumber; x++) {
+        for (let x = 0; x <= columnNumber-1; x++) {
             const slotTdEL = document.createElement("td");
             slotTdEL.className = "no-event"
             slotTdEL.id = `${slotId}`
+            slotTdEL.innerHTML = `${slotId}`
             slotTdEL.addEventListener('click', () => { onSlotClick(slotTdEL.id); }, false)
 
             slotTdEL.className = "cell";
@@ -123,11 +124,22 @@ function SelectValue(userScheduleModel) {
         tablebodyEL.appendChild(rowTrEl)
 
     }
-    const userTasks = userScheduleModel.Tasks;
-    console.log(userTasks)
-
     scheduleTable.appendChild(tablebodyEL)
     MainDiv.appendChild(scheduleTable)
+
+    const userTasks = userScheduleModel.tasks;
+
+    for (let i = 0; i < userTasks.length; i++) {
+        const task = userTasks[i];
+
+        var slot = document.getElementById(task.slotID)
+        slot.innerHTML = task.title;
+        var slot = document.getElementById(task.slotID+columnNumber)
+        slot.innerHTML = task.title;
+    }
+
+
+
 }
 function onSlotClick(slotId) {
     alert(`You clicked on ${slotId}`);
