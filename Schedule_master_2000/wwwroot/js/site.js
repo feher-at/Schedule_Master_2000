@@ -74,10 +74,10 @@ function SelectValue(userScheduleModel) {
     let columnNumber = 0;
 
     var MainDiv = document.getElementById("home");
+    MainDiv.style.height = "1300px";
 
     var type = document.getElementById("SelectType");
     var chosenScheduleID = type.options[type.selectedIndex].value;
-    console.log(userScheduleModel)
     const scheduleTable = document.createElement("table");
     scheduleTable.className = "calendar table table - bordered";
     
@@ -135,13 +135,16 @@ function SelectValue(userScheduleModel) {
 
     for (let i = 0; i < userTasks.length; i++) {
         const task = userTasks[i];
-
+        var timeSpan = 0;
         var slot = document.getElementById(task.slotID)
         slot.innerHTML = task.title;
-        var slot = document.getElementById(task.slotID+columnNumber)
-        slot.innerHTML = task.title;
+        for (let i = 0; i < task.lenght - 1; i++) {
+            timeSpan += columnNumber
+            var slot = document.getElementById(task.slotID + timeSpan)
+            slot.innerHTML = task.title;
+        }
+
     }
-    MainDiv.style.height = "1300px";
 }
 function onSlotClick(slotId) {
     alert(`You clicked on ${slotId}`);
