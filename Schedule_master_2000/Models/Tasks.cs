@@ -12,15 +12,17 @@ namespace Schedule_master_2000.Models
         public string Title { get; set; }
         public int SlotID { get; set; }
         public string Content { get; set; }
+        public int Lenght { get; set; }
         
 
-        public Tasks(int taskID,int userID,int slotID,string title, string content)
+        public Tasks(int taskID,int userID,int slotID,string title, string content, int lenght)
         {
             TaskID = taskID;
             UserID = userID;
             SlotID = slotID;
             Title = title;
             Content = content;
+            Lenght = lenght;
             
 
         }

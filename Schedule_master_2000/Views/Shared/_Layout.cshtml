@@ -30,13 +30,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light p-3" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (Context.User.IsInRole("admin"))
+                        @if (Context.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="DIIIK">DIIIKHE</a>
+                                <a class="nav-link text-light p-3" asp-controller="Account" asp-action="UserAccount">My Account</a>
                             </li>
-                        }
-
+                        } 
                     </ul>
                 </div>
             </div>
@@ -56,7 +55,5 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
-
-   
 </body>
 </html>

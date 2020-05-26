@@ -13,7 +13,7 @@
         <form class="form-inline justify-content-center">
             @if (Context.User.Identity.IsAuthenticated)
             {
-                <a class="btn btn-dark my-2 my-sm-0 m-2" onclick="GetSchedules()" ;>Go to My Schedule</a>
+                <a class="btn btn-dark my-2 my-sm-0 m-2 text-light" onclick="GetSchedules()">Go to My Schedule</a>
                 <a asp-controller="Account" asp-action="LogOut" class="btn btn-danger my-2 my-sm-0 m-2">Log Out</a>
             }
             else

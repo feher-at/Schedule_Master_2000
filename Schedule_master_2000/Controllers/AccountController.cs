@@ -13,18 +13,15 @@ using Schedule_master_2000.Services;
 using Microsoft.AspNetCore.Identity;
 using Schedule_master_2000.Models;
 
-
 namespace Schedule_master_2000.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
 
-
         public AccountController(IUserService userService)
         {
             _userService = userService;
-           
         }
 
         [HttpGet]
@@ -66,10 +63,12 @@ namespace Schedule_master_2000.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginAsync(LoginViewModel model)
         {
-
             if (_userService.ValidateUser(model.Email, model.Password))
             {
-                User user = _userService.GetOneUserByEmail(model.Email);
+                var claims = new List<Claim> { new Claim(ClaimTypes.Email, model.Email) };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
                 {
@@ -96,22 +95,10 @@ namespace Schedule_master_2000.Controllers
                 };
 
                 await HttpContext.SignInAsync(
-
-                    
-
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    
-                    new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> {
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
 
-                    
-
-                     new Claim(ClaimTypes.Email, model.Email),
-                     
-
-                    }, CookieAuthenticationDefaults.AuthenticationScheme)),
-                    new AuthenticationProperties());
-                var ci = (ClaimsIdentity)principal.Identity;
-                ci.AddClaim(new Claim(ci.RoleClaimType, user.Role));
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -120,5 +107,48 @@ namespace Schedule_master_2000.Controllers
                 return View("Login", model);
             }
         }
+
+        [HttpGet]
+        public IActionResult UserAccount()
+        {
+            string email = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+
+            User user = _userService.GetOne(email);
+
+            return View(user);
+        }
+
+        [HttpGet]
+        public IActionResult ModifyUser()
+        {
+            string email = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+
+            User user = _userService.GetOne(email);
+            ModifyViewModel modifyModel = new ModifyViewModel()
+            {
+                User = user,
+                Modification = null
+            };
+
+            return View(modifyModel);
+        }
+
+        [HttpPost]
+        public IActionResult ModifyUser([FromForm(Name = "Modification.Id")] int id,
+            [FromForm(Name = "Modification.Username")] string username, [FromForm(Name = "Modification.Email")] string email,
+            [FromForm(Name = "Modification.Password")] string password)
+        {
+            _userService.UpdateUser(id, username, password, email);
+
+            return RedirectToAction("LogOutAndPromoteLogin", "Account");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> LogOutAndPromoteLoginAsync()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
+        }
+
     }
 }

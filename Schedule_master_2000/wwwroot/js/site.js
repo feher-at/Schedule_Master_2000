@@ -8,6 +8,7 @@ $(window).on("resize", function () {
     $(".jumbotron").css({ height: $(window).height() + "px" });
 });
 
+
 function GetSchedules() {
 
     var xhr = new XMLHttpRequest();
@@ -69,79 +70,79 @@ function onSchedulesReceived(response) {
 }
 
 function SelectValue(userScheduleModel) {
-    let slotId = 1;
+    let slotId = 1;    
     let columnNumber = 0;
+
     var MainDiv = document.getElementById("home");
     var type = document.getElementById("SelectType");
     var chosenScheduleID = type.options[type.selectedIndex].value;
-    var chosenScheduleTitle = type.options[type.selectedIndex].text;
-    const TitleDiv = document.createElement("div");
-    TitleDiv.className = "titleDiv";
-    TitleDiv.innerHTML = chosenScheduleTitle;
-
-    const hoursTableEl = document.createElement("table");
-    hoursTableEl.className = "hours_table";
-
-    for (let i = 1; i <= 24; i++) {
-        const hourTrEl = document.createElement("tr")
-        hourTrEl.innerHTML = i + ":00";
-        hourTrEl.className = "hours_tr";
-        hoursTableEl.appendChild(hourTrEl);
-
-    }
+    console.log(userScheduleModel)
+    const scheduleTable = document.createElement("table");
+    scheduleTable.className = "calendar table table - bordered";
     
-    const TableEl = document.createElement("table");
-    TableEl.className = "tableEl";
-    const userColumns = userScheduleModel.columns
-    const ColumnTrEl = document.createElement("tr");
-    ColumnTrEl.id = "columntr";
+    const tableHeadEL = document.createElement("thead");
+
+    const columnTrEl = document.createElement("tr");
+
+    const userColumns = userScheduleModel.columns;
 
     for (let i = 0; i < userColumns.length; i++) {
         const column = userColumns[i];
         if (column.scheduleID == chosenScheduleID) {
             columnNumber++;
-            const columnEl = document.createElement('th');
-            columnEl.className = "column_th";
-            columnEl.id = "columnTh";
-            columnEl.innerHTML = column.title;
-            ColumnTrEl.appendChild(columnEl);
-            columnEl.innerHTML = column.title;
-            ColumnTrEl.appendChild(columnEl);
+            const columnThEl = document.createElement('th');
+            columnThEl.style.width = "10%";
+            columnThEl.innerHTML = column.title;
+
+            columnTrEl.appendChild(columnThEl);
         }
     }
-    TableEl.appendChild(ColumnTrEl);
-    
-    for (let i = 1; i <= 24; i++) {
-        
-        const slotTr = document.createElement("tr")
-        slotTr.className = "columns_tr";
-        slotTr.id = "slotTr";
-        for (let index = 0; index < columnNumber; index++) {
-            slotThEl = document.createElement("th");
-            slotThEl.id = slotId + (index * 24);
-            
-            slotThEl.className = "slot_th";
-            slotTr.appendChild(slotThEl);
+    tableHeadEL.appendChild(columnTrEl)
+    scheduleTable.appendChild(tableHeadEL)
+
+    const tablebodyEL = document.createElement("tbody");
+
+
+    for (let i = 0; i <= 12; i++) {
+        const rowTrEl = document.createElement("tr");
+        const hourTdEL = document.createElement("td");
+        hourTdEL.innerHTML = `${i}:00`
+        rowTrEl.appendChild(hourTdEL);
+
+        for (let x = 0; x <= columnNumber-1; x++) {
+            const slotTdEL = document.createElement("td");
+            slotTdEL.className = "no-event"
+            slotTdEL.id = `${slotId}`
+            slotTdEL.innerHTML = `${slotId}`
+            slotTdEL.addEventListener('click', () => { onSlotClick(slotTdEL.id); }, false)
+
+            slotTdEL.className = "cell";
+            slotTdEL.rowSpan = 1;
+            slotId = slotId + 1;
+            rowTrEl.appendChild(slotTdEL);
         }
-        slotId++;
-        TableEl.appendChild(slotTr);
+        tablebodyEL.appendChild(rowTrEl)
 
-        
+    }
+    scheduleTable.appendChild(tablebodyEL)
+    MainDiv.appendChild(scheduleTable)
+
+    const userTasks = userScheduleModel.tasks;
+
+    for (let i = 0; i < userTasks.length; i++) {
+        const task = userTasks[i];
+
+        var slot = document.getElementById(task.slotID)
+        slot.innerHTML = task.title;
+        var slot = document.getElementById(task.slotID+columnNumber)
+        slot.innerHTML = task.title;
     }
 
-    TitleDiv.appendChild(TableEl);
-    MainDiv.appendChild(TitleDiv);
-    MainDiv.appendChild(hoursTableEl);
 
-    
-    
-    const usertasks = userScheduleModel.tasks;
-    for (let i = 0; i < usertasks.length; i++) {
 
-        const reservedSlot = document.getElementById(usertasks[i].slotID);
-        reservedSlot.innerHTML = usertasks[i].title;
-    }
-
+}
+function onSlotClick(slotId) {
+    alert(`You clicked on ${slotId}`);
 }
 function createSchedule(userID) {
     const divEl = document.getElementById('home');
