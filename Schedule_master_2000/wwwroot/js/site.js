@@ -70,7 +70,6 @@ function onSchedulesReceived(response) {
 
 function SelectValue(userScheduleModel) {
     let slotId = 1;
-    
     let columnNumber = 0;
     var MainDiv = document.getElementById("home");
     var type = document.getElementById("SelectType");

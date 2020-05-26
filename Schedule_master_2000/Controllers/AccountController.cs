@@ -11,6 +11,8 @@ using Schedule_master_2000.Domain;
 using Schedule_master_2000.ViewModels;
 using Schedule_master_2000.Services;
 using Microsoft.AspNetCore.Identity;
+using Schedule_master_2000.Models;
+
 
 namespace Schedule_master_2000.Controllers
 {
@@ -18,9 +20,11 @@ namespace Schedule_master_2000.Controllers
     {
         private readonly IUserService _userService;
 
+
         public AccountController(IUserService userService)
         {
             _userService = userService;
+           
         }
 
         [HttpGet]
@@ -62,12 +66,10 @@ namespace Schedule_master_2000.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginAsync(LoginViewModel model)
         {
+
             if (_userService.ValidateUser(model.Email, model.Password))
             {
-                var claims = new List<Claim> { new Claim(ClaimTypes.Email, model.Email) };
-
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                User user = _userService.GetOneUserByEmail(model.Email);
 
                 var authProperties = new AuthenticationProperties
                 {
@@ -94,10 +96,22 @@ namespace Schedule_master_2000.Controllers
                 };
 
                 await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
 
+                    
+
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    
+                    new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> {
+
+                    
+
+                     new Claim(ClaimTypes.Email, model.Email),
+                     
+
+                    }, CookieAuthenticationDefaults.AuthenticationScheme)),
+                    new AuthenticationProperties());
+                var ci = (ClaimsIdentity)principal.Identity;
+                ci.AddClaim(new Claim(ci.RoleClaimType, user.Role));
                 return RedirectToAction("Index", "Home");
             }
             else

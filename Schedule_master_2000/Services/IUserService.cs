@@ -14,5 +14,7 @@ namespace Schedule_master_2000.Services
         void DeleteUser(int id);
         bool CheckIfUserExists(string email);
         bool ValidateUser(string email, string password);
+
+        User GetOneUserByEmail(string email);
     }
 }
