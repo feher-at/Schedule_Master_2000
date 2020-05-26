@@ -74,6 +74,7 @@ function SelectValue(userScheduleModel) {
     let columnNumber = 0;
 
     var MainDiv = document.getElementById("home");
+
     var type = document.getElementById("SelectType");
     var chosenScheduleID = type.options[type.selectedIndex].value;
     console.log(userScheduleModel)
@@ -85,6 +86,9 @@ function SelectValue(userScheduleModel) {
     const columnTrEl = document.createElement("tr");
 
     const userColumns = userScheduleModel.columns;
+    const columnThEl = document.createElement('th');
+    columnThEl.style.width = "10%";
+    columnTrEl.appendChild(columnThEl);
 
     for (let i = 0; i < userColumns.length; i++) {
         const column = userColumns[i];
@@ -103,7 +107,7 @@ function SelectValue(userScheduleModel) {
     const tablebodyEL = document.createElement("tbody");
 
 
-    for (let i = 0; i <= 12; i++) {
+    for (let i = 0; i <= 24; i++) {
         const rowTrEl = document.createElement("tr");
         const hourTdEL = document.createElement("td");
         hourTdEL.innerHTML = `${i}:00`
@@ -137,9 +141,7 @@ function SelectValue(userScheduleModel) {
         var slot = document.getElementById(task.slotID+columnNumber)
         slot.innerHTML = task.title;
     }
-
-
-
+    MainDiv.style.height = "1300px";
 }
 function onSlotClick(slotId) {
     alert(`You clicked on ${slotId}`);
