@@ -18,10 +18,12 @@ namespace Schedule_master_2000.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IUserActivityService _userActivityService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, IUserActivityService userActivityService)
         {
             _userService = userService;
+            _userActivityService = userActivityService;
         }
 
         [HttpGet]
@@ -43,6 +45,11 @@ namespace Schedule_master_2000.Controllers
             }
 
             _userService.InsertUser(model.Username, model.Password, model.Email);
+
+            User user = _userService.GetOne(model.Email);
+            _userActivityService.InsertActivity(user.ID, "User registered on the site ", DateTime.Now);
+
+           
 
             return RedirectToAction("Login");
         }
@@ -98,6 +105,9 @@ namespace Schedule_master_2000.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
+                User user = _userService.GetOne(model.Email);
+                _userActivityService.InsertActivity(user.ID, "User login on the site ", DateTime.Now);
+               
 
                 return RedirectToAction("Index", "Home");
             }
@@ -140,13 +150,21 @@ namespace Schedule_master_2000.Controllers
         {
             _userService.UpdateUser(id, username, password, email);
 
+            _userActivityService.InsertActivity(id, "User modificated he/she's profile", DateTime.Now);
+          
             return RedirectToAction("LogOutAndPromoteLogin", "Account");
         }
 
         [HttpGet]
         public async Task<ActionResult> LogOutAndPromoteLoginAsync()
         {
+            var user = HttpContext.User;
+            var claim = user.Claims.First(c => c.Type == ClaimTypes.Email);
+            var email = claim.Value;
+            User currentUser = _userService.GetOne(email);
+            _userActivityService.InsertActivity(currentUser.ID, "User logout", DateTime.Now);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
             return RedirectToAction("Login", "Account");
         }
 

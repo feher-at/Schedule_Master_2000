@@ -15,6 +15,12 @@ CREATE TABLE users(
     user_role VARCHAR(6) NOT NULL
 );
 
+CREATE TABLE activities(
+    userid INT REFERENCES users(userid) ON DELETE CASCADE,
+    activity TEXT NOT NULL,
+    activity_time TIMESTAMP NOT NULL
+);
+
 CREATE TABLE schedules(
     scheduleid SERIAL PRIMARY KEY,
     userid INT REFERENCES users(userid) ON DELETE CASCADE,

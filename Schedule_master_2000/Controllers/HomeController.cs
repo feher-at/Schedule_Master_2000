@@ -19,14 +19,16 @@ namespace Schedule_master_2000.Controllers
         private readonly ISlotService _slotService;
         private readonly ITaskService _taskService;
         private readonly IColumnService _columnService;
+        private readonly IUserActivityService _userActivityService;
 
-        public HomeController(IUserService userService, IScheduleService scheduleService, ISlotService slotService, ITaskService taskService, IColumnService columnService)
+        public HomeController(IUserService userService, IScheduleService scheduleService, ISlotService slotService, ITaskService taskService, IColumnService columnService, IUserActivityService userActivityService)
         {
             _userService = userService;
             _scheduleService = scheduleService;
             _slotService = slotService;
             _taskService = taskService;
             _columnService = columnService;
+            _userActivityService = userActivityService;
         }
 
         public IActionResult Index()
@@ -57,14 +59,33 @@ namespace Schedule_master_2000.Controllers
             List<Tasks> taskList = _taskService.GetOneUserAllTasks(currentUser.ID);
             List<Column> columnList = _columnService.GetAllCollumnToOneUser(currentUser.ID);
             OneUserSchedules oneUserSchedules = new OneUserSchedules(currentUser, scheduleList, columnList, slotList, taskList);
+            _userActivityService.InsertActivity(currentUser.ID, "User request all he/she's schedule(s)", DateTime.Now);
+            
             return Json(oneUserSchedules);
         }
+
+        public IActionResult GetUser()
+        {
+            var user = HttpContext.User;
+            var claim = user.Claims.First(c => c.Type == ClaimTypes.Email);
+            var email = claim.Value;
+            User currentUser = _userService.GetOne(email);
+            return Json(currentUser);
+        }
+
+        public IActionResult GetActivities()
+        {
+
+        }
+
         [Authorize]
         [HttpPost]
         public IActionResult NewSchedule([FromBody] Schedule schedule)
         {
             int scheduleId = _scheduleService.InsertSchedule(schedule.UserID, schedule.Title);
             schedule.ScheduleID = scheduleId;
+            
+            _userActivityService.InsertActivity(schedule.UserID, "User are creating new schedule", DateTime.Now);
             return Json(schedule);
 
         }
@@ -76,6 +97,7 @@ namespace Schedule_master_2000.Controllers
             foreach(Column column in columnList)
             {
                 _columnService.InsertColumn(column.ScheduleID, column.UserID, column.Title);
+                _userActivityService.InsertActivity(column.UserID, "User are creating new column", DateTime.Now);
             }
             return Content("success");
 

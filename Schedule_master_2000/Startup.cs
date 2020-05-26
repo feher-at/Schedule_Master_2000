@@ -85,6 +85,7 @@ namespace Schedule_master_2000
             services.AddScoped<IScheduleService, SqlScheduleService>();
             services.AddScoped<ISlotService, SqlSlotService>();
             services.AddScoped<ITaskService, SqlTaskService>();
+            services.AddScoped<IUserActivityService, SqlUserActivityService>();
             services.AddScoped<IDbConnection>(_ =>
             {
                 var connection = new NpgsqlConnection(connectionString);

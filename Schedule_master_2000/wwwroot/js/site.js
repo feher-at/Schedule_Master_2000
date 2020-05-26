@@ -8,6 +8,46 @@ $(window).on("resize", function () {
     $(".jumbotron").css({ height: $(window).height() + "px" });
 });
 
+function GetAllActiviti() {
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/Home/GetActivities', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 & xhr.status == 200) {
+            console.log(xhr.responseText);
+            
+        }
+    }
+    xhr.send();
+}
+
+function GetUserRole() {
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/Home/GetUser', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 & xhr.status == 200) {
+            console.log(xhr.responseText);
+            AdminMenu(xhr.responseText);
+        }
+    }
+    xhr.send();
+}
+
+function AdminMenu(response) {
+    const MainDiv = document.getElementById("menu");
+    const user = JSON.parse(response);
+    if (user.role == "admin") {
+        const AllUserActionButton = document.createElement("button");
+        AllUserActionButton.className = "btn btn-dark";
+        AllUserActionButton.innerHTML = "See Log";
+        MainDiv.appendChild(AllUserActionButton);
+    }
+}
+
+
 
 function GetSchedules() {
 
@@ -17,19 +57,24 @@ function GetSchedules() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             onSchedulesReceived(xhr.responseText);
+            console.log(xhr.responseText);
         }
     }
     xhr.send();
 }
 
 
+
+
 function onSchedulesReceived(response) {
     const userSchedulesModel = JSON.parse(response);
+    
     const userID = userSchedulesModel.user.id;
     const divEl = document.getElementById('home');
     while (divEl.firstChild) {
         divEl.removeChild(divEl.firstChild);
     }
+   
 
     if (userSchedulesModel.schedules.length == 0) {
         const homeDiv = document.createElement("div");
