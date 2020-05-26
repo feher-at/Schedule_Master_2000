@@ -12,4 +12,7 @@
             <h5 class="card-text row">E-mail: @Model.Email</h5>
             <h5 class="card-text row">Account type: @Model.Role</h5>
         </div>
+        <div class="card-footer">
+            <a asp-controller="Account" asp-action="ModifyUser" class="btn btn-dark">Modify</a>
+        </div>
     </div>
