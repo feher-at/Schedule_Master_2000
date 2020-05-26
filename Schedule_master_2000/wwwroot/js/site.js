@@ -79,6 +79,7 @@ function SelectValue(userScheduleModel) {
     var type = document.getElementById("SelectType");
     var chosenScheduleID = type.options[type.selectedIndex].value;
     const scheduleTable = document.createElement("table");
+    scheduleTable.id = "scheduleTable";
     scheduleTable.className = "calendar table table - bordered";
     
     const tableHeadEL = document.createElement("thead");
@@ -118,7 +119,7 @@ function SelectValue(userScheduleModel) {
             slotTdEL.className = "no-event"
             slotTdEL.id = `${slotId}`
             slotTdEL.innerHTML = `${slotId}`
-            slotTdEL.addEventListener('click', () => { onSlotClick(slotTdEL.id); }, false)
+            slotTdEL.addEventListener('click', () => { onSlotClick(userScheduleModel,slotTdEL.id); }, false)
 
             slotTdEL.className = "cell";
             slotTdEL.rowSpan = 1;
@@ -146,8 +147,46 @@ function SelectValue(userScheduleModel) {
 
     }
 }
-function onSlotClick(slotId) {
-    alert(`You clicked on ${slotId}`);
+function onSlotClick(userScheduleModel, slotId) {
+    const divEl = document.getElementById('home');
+    const divEltable = document.getElementById('scheduleTable');
+    divEltable.style.display = "none";
+    const scheduleDropDown = document.createElement("div");
+    scheduleDropDown.className = "schedule_container";
+    const SelectEl = document.createElement("select");
+    SelectEl.id = "SelectTask";
+    SelectEl.addEventListener("change", () => { onTaskSelect(slotId); }, false)
+    const baseOptionEl = document.createElement("option");
+    baseOptionEl.value = "0";
+    baseOptionEl.textContent = "Tasks:";
+    SelectEl.appendChild(baseOptionEl);
+    const userTasks = userScheduleModel.tasks;
+    for (let i = 0; i < userTasks.length; i++) {
+        const task = userTasks[i];
+        const scheduleOptionEl = document.createElement("option");
+        scheduleOptionEl.value = `${task.id}`;
+        scheduleOptionEl.textContent = `${task.title}`;
+
+        SelectEl.appendChild(scheduleOptionEl);
+    }
+    scheduleDropDown.appendChild(SelectEl);
+    divEl.appendChild(scheduleDropDown);
+}
+function onTaskSelect(slotId) {
+
+    var type = document.getElementById("SelectTask");
+    var chosenTask = type.options[type.selectedIndex].textContent;
+    console.log(chosenTask);
+    var slot = document.getElementById(slotId)
+    slot.innerHTML = chosenTask;
+    //for (let i = 0; i < task.lenght - 1; i++) {
+    //    timeSpan += columnNumber
+    //    var slot = document.getElementById(task.slotID + timeSpan)
+    //    slot.innerHTML = task.title;
+    //}
+
+    const divEl = document.getElementById('scheduleTable');
+    divEl.style.display = "block";
 }
 function createSchedule(userID) {
     const divEl = document.getElementById('home');
