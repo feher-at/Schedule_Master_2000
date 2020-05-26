@@ -117,6 +117,22 @@ namespace Schedule_master_2000.Services
             HandleExecuteNonQuery(command);
         }
 
+        public User GetOneUserByEmail(string email)
+        {
+            using var command = _connection.CreateCommand();
+
+            var userNameParam = command.CreateParameter();
+            userNameParam.ParameterName = "email";
+            userNameParam.Value = email;
+
+            command.CommandText = $"SELECT* FROM users WHERE email = @email";
+            command.Parameters.Add(userNameParam);
+
+            using var reader = command.ExecuteReader();
+            reader.Read();
+            return ToExistingUser(reader);
+        }
+
         public bool CheckIfUserExists(string email)
         {
             using var command = _connection.CreateCommand();
