@@ -72,10 +72,11 @@ namespace Schedule_master_2000.Controllers
             User currentUser = _userService.GetOne(email);
             return Json(currentUser);
         }
-
+        [HttpGet]
         public IActionResult GetActivities()
         {
-
+            List<UserActivity> activities = _userActivityService.GetAllActivity();
+            return Json(activities);
         }
 
         [Authorize]

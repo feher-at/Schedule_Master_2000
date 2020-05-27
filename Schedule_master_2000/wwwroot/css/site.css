@@ -79,6 +79,34 @@ for details on configuring this project to bundle and minify static web assets. 
 a {
     color: #0366d6;
 }
+.logDiv{
+    margin-top:30px;
+}
+
+.log_table {
+    margin: 0 auto;
+    width: 60%;
+    border: 1px solid black;
+}
+.log_row {
+    height: 36px;
+    border-bottom: 1px solid black;
+}
+#userid_th{
+    width:8%;
+    border-right: 1px solid black;
+    text-align : center;
+}
+#activity_th {
+    width: 62%;
+    border-right: 1px solid black;
+    text-align: center;
+}
+
+#time_th {
+    text-align: center;
+    width: 30%;
+}
 
 .btn-primary {
   color: #fff;

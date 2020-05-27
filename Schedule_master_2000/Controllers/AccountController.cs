@@ -57,6 +57,12 @@ namespace Schedule_master_2000.Controllers
         [HttpGet]
         public async Task<ActionResult> LogOutAsync()
         {
+            var user = HttpContext.User;
+            var claim = user.Claims.First(c => c.Type == ClaimTypes.Email);
+            var email = claim.Value;
+            User currentUser = _userService.GetOne(email);
+            _userActivityService.InsertActivity(currentUser.ID, "User logout", DateTime.Now);
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
@@ -72,7 +78,7 @@ namespace Schedule_master_2000.Controllers
         {
             if (_userService.ValidateUser(model.Email, model.Password))
             {
-                var claims = new List<Claim> { new Claim(ClaimTypes.Email, model.Email) };
+                var claims = new List<Claim> { new Claim(ClaimTypes.Email, model.Email)};
 
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);

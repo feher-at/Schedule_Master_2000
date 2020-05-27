@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS slots;
 DROP TABLE IF EXISTS schedule_columns;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS activities;
 
 DROP FUNCTION delete_schedule(integer,integer);
 

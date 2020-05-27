@@ -31,12 +31,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-light p-3" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+
                         @if (Context.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light p-3" asp-controller="Account" asp-action="UserAccount" onclick="">My Account</a>
                             </li>
-                        } 
+                        }
+
                     </ul>
                 </div>
             </div>
