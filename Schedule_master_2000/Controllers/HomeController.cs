@@ -103,6 +103,17 @@ namespace Schedule_master_2000.Controllers
             return Content("success");
 
         }
+        [Authorize]
+        [HttpPost]
+        public IActionResult NewTask()
+        {
+            var userId = Convert.ToInt32(HttpContext.User.FindFirstValue("ID"));
+            string chosenSytle = Request.Form["chosenStyle"];
+
+            _slotService.InsertSlot()
+            return Content("success");
+
+        }
     }
 }
 

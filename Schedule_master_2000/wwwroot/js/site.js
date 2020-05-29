@@ -288,6 +288,20 @@ function onTaskSelect(slotId) {
 
     const divEl = document.getElementById('scheduleTable');
     divEl.style.display = "block";
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('Post', '/Home/NewTask', true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            alert(xhr.responseText);
+        }
+    }
+    var data = new FormData()
+    data.append("chosenTask", chosenTask)
+    data.append("slotId", slotId)
+    xhr.send(data);
 }
 function createSchedule(userID) {
     const divEl = document.getElementById('home');
